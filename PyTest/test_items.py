@@ -30,5 +30,5 @@ def test_localisation(browser, language) :
     elif language == 'en-gb' :
         assert add_to_basket == "Add to basket", f"Your localisation must be en-gb, now your is {language} "
     else :
-         print(f" {language} is not suppotred, u might have isues.")
+         print(f"  {language} is not suppotred, u might have isues.")
     time.sleep(5)
