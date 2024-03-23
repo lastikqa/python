@@ -23,6 +23,7 @@ try :
     alert = browser.switch_to.alert
 
     assert getting_capcha_question.is_integer(), ('getting_capcha_question must be int')
+    assert browser.switch_to.alert==True ," alert is not found"
 finally :
 
     time.sleep(10)
