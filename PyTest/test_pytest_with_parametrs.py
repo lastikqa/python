@@ -19,8 +19,8 @@ def browser() :
     browser.quit()
 
 
-@pytest.mark.parametrize('language', ["ru", "en-gb"])
-def test_guest_should_see_login_link(browser, language) :
+@pytest.mark.parametrize('language', ["ru", "en-gb","fr"])
+def test_localisation(browser, language) :
     link = f"http://selenium1py.pythonanywhere.com/{language}/catalogue/coders-at-work_207/"
     browser.get(link)
     wait = WebDriverWait(browser, 30, poll_frequency=1)
@@ -29,4 +29,6 @@ def test_guest_should_see_login_link(browser, language) :
         assert add_to_basket == "Добавить в корзину", f"Your localisation must be ru, now your is {language} "
     elif language == 'en-gb' :
         assert add_to_basket == "Add to basket", f"Your localisation must be en-gb, now your is {language} "
+    else :
+         print(f" {language} is not suppotred, u might have isues.")
     time.sleep(5)
