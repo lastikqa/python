@@ -7,7 +7,7 @@ def pytest_addoption(parser):
                      help="Choose browser: chrome or firefox")
     parser.addoption('--language', action='store', default="ru",
                      help="Choose language: '--language=en' or '--language=ru'")
-    parser.addoption('--browser_arg', action='store', default="--disable-blink-features=AutomationControlled",
+    parser.addoption('--browser_arg', action='store', default="disable-blink-features=AutomationControlled",
                      help='Exaple : --browser_arg=disable-blink-features=AutomationControlled')
 
 
