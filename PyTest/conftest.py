@@ -3,9 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options
 def pytest_addoption(parser):
-    parser.addoption('--browser_name', action='store', default="chrome",
+    parser.addoption('--browser_name', action='store', default="firefox",
                      help="Choose browser: chrome or firefox")
-    parser.addoption('--language', action='store', default="ru",
+    parser.addoption('--language', action='store', default="en",
                      help="Choose language: '--language=en' or '--language=ru'")
     parser.addoption('--browser_arg', action='store', default="disable-blink-features=AutomationControlled",
                      help='Exaple : --browser_arg=disable-blink-features=AutomationControlled')
