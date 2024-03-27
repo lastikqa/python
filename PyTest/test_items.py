@@ -1,4 +1,3 @@
-
 import time
 
 import pytest
@@ -7,8 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-
-def test_adding_button_in_diffirent_localisations(browser,language) :
+def test_adding_button_in_diffirent_localisations(browser, language) :
     link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/."
     browser.get(link)
     wait = WebDriverWait(browser, 30, poll_frequency=1)
