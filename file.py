@@ -25,14 +25,14 @@ driver = webdriver.Firefox(options=options)
 wait = WebDriverWait(driver, 30, poll_frequency=1)
 
 driver.get('http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/')
-click=driver.find_element(By.XPATH, "//button[@class='btn btn-lg btn-primary btn-add-to-basket']").click()
-book_name =driver.find_element(By.TAG_NAME, "h1").text
-
-message_of_success = driver.find_element(By.XPATH, "(//div[@class='alertinner ']/p/strong)").text
+click=driver.find_element(By.CSS_SELECTOR, "a[class='btn btn-default']").click()
 
 
-print(book_name)
-print(message_of_success)
+
+
+
+
+
 
 time.sleep(30)
 driver.quit()

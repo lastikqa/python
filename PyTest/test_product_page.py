@@ -3,7 +3,7 @@ import pytest
 from .pages.base_page import BasePage
 from .pages.login_page import LoginPage
 from .pages.product_page import ProductPage
-import time
+from .pages.basket_page import BasketPage
 
 
 def test_guest_should_see_login_link_on_product_page(browser) :
@@ -51,3 +51,9 @@ def test_message_disappeared_after_adding_product_to_basket(browser) :
     page.open()
     page.clicing_adding_button()
     page.should_not_message_disappeared_after_adding_product_to_basket()
+def test_guest_cant_see_product_in_basket_opened_from_product_page (browser):
+    link = f"http://selenium1py.pythonanywhere.com/ru/catalogue/coders-at-work_207/"
+    page = ProductPage(browser, link)
+    page.open()
+    page.go_to_basket()
+    page.should_be_basket_page()
