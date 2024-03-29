@@ -3,9 +3,13 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from PyTest.pages.locators import BasePageLocators
+from PyTest.conftest import language
 
 
 class BasePage:
+    def go_to_main_page(self):
+        self.browser.find_element(*BasePageLocators.oscar_button).click()
+
     def go_to_basket(self):
         self.browser.find_element(*BasePageLocators.basket_button).click()
 
@@ -51,3 +55,14 @@ class BasePage:
 
     def open(self):
         self.browser.get(self.url)
+
+    def basket_price_status(self):
+        basket_price = self.browser.find_element(*BasePageLocators.basket_price).text
+        return basket_price
+
+    def should_be_empty_basket_price(self):
+        basket_price = self.basket_price_status()
+        if language == "ru":
+            assert basket_price == "0,00£", f"Your Basket price is {basket_price}, The price should be '0,00£'"
+        elif language == "en-gb":
+            assert basket_price == "£0.00", f"Your Basket price is {basket_price}, The price should be '£0.00'"

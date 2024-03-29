@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 
 class BasketPageLocators:
     basket_header = (By.TAG_NAME, "h1")
+    basket_message = (By.CSS_SELECTOR, "div[id='content_inner'] p")
 
 
 class BasePageLocators:
@@ -10,11 +11,14 @@ class BasePageLocators:
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
     basket_button = (By.CSS_SELECTOR, "a[class='btn btn-default']")
     search_button = (By.CSS_SELECTOR, "input[type='submit']")
-    basket_headers = (By.TAG_NAME, "h1")
+    basket_price = (By.XPATH, "//div[@class='basket-mini pull-right hidden-xs']")
+    oscar_button = (By.XPATH, "(//header//div/a)[1]")
 
 
 class MainPageLocators:
-    pass
+    welcome_text = (By.XPATH, "(//div[@class='sub-header'])[1]/h2")
+    recomended_reading = (By.XPATH, "(//div[@class='sub-header'])[2]/h2")
+    other_good_books = (By.XPATH, "(//div[@class='sub-header'])[3]/h2")
 
 
 class LoginPageLocators:
