@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 class BasketPageLocators:
     basket_header = (By.TAG_NAME, "h1")
     basket_message = (By.CSS_SELECTOR, "div[id='content_inner'] p")
+    basket_goods=(By.XPATH,"//div/h3")
 
 
 class BasePageLocators:
@@ -13,17 +14,23 @@ class BasePageLocators:
     search_button = (By.CSS_SELECTOR, "input[type='submit']")
     basket_price = (By.XPATH, "//div[@class='basket-mini pull-right hidden-xs']")
     oscar_button = (By.XPATH, "(//header//div/a)[1]")
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 
 class MainPageLocators:
     welcome_text = (By.XPATH, "(//div[@class='sub-header'])[1]/h2")
-    recomended_reading = (By.XPATH, "(//div[@class='sub-header'])[2]/h2")
-    other_good_books = (By.XPATH, "(//div[@class='sub-header'])[3]/h2")
+    recommended_reading = (By.XPATH, "(//div[@class='sub-header'])[2]/h2")
+    other_good_books = (By.XPATH, "(//div[@class='sub-header'])[3]/h3")
 
 
 class LoginPageLocators:
     login_form = (By.CSS_SELECTOR, "form[id='login_form']")
     register_form = (By.CSS_SELECTOR, "form[id='register_form']")
+    register_email_address = (By.CSS_SELECTOR, "input[id='id_registration-email']")
+    register_password = (By.CSS_SELECTOR,"input[id='id_registration-password1']")
+    register_confirm_password = (By.CSS_SELECTOR,"input[id='id_registration-password2']")
+    register_button = (By.CSS_SELECTOR,"button[name='registration_submit']")
+    registration_success =(By.XPATH,"(//div[@class='alertinner wicon'])[1]")
 
 
 class ProductPageLocators:

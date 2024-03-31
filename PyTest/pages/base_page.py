@@ -3,7 +3,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from PyTest.pages.locators import BasePageLocators
-from PyTest.conftest import language
 
 
 class BasePage:
@@ -14,8 +13,8 @@ class BasePage:
         self.browser.find_element(*BasePageLocators.basket_button).click()
 
     def go_to_login_page(self):
-        link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
-        link.click()
+        self.browser.find_element(*BasePageLocators.LOGIN_LINK).click()
+
 
     def should_be_login_link(self):
         assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
@@ -60,9 +59,6 @@ class BasePage:
         basket_price = self.browser.find_element(*BasePageLocators.basket_price).text
         return basket_price
 
-    def should_be_empty_basket_price(self):
-        basket_price = self.basket_price_status()
-        if language == "ru":
-            assert basket_price == "0,00£", f"Your Basket price is {basket_price}, The price should be '0,00£'"
-        elif language == "en-gb":
-            assert basket_price == "£0.00", f"Your Basket price is {basket_price}, The price should be '£0.00'"
+    def should_be_authorized_user(self):
+      assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
+                                                                 " probably unauthorised user"
