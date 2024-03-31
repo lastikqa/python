@@ -23,7 +23,6 @@ class LoginPage(BasePage):
         f = faker.Faker()
         email = f.email()
         password = f.password()
-        password2 = password
         self.browser.find_element(*LoginPageLocators.register_email_address).send_keys(email)
         self.browser.find_element(*LoginPageLocators.register_password).send_keys(password)
         self.browser.find_element(*LoginPageLocators.register_confirm_password).send_keys(password)

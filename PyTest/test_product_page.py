@@ -1,5 +1,3 @@
-import time
-
 import pytest
 from .pages.main_page import MainPage
 from .pages.base_page import BasePage
@@ -8,8 +6,10 @@ from .pages.product_page import ProductPage
 from .pages.basket_page import BasketPage
 from .pages.urls import ProductPageUrl
 from .pages.urls import LoginPageUrl
+
+
 @pytest.mark.add_to_basket
-class TestUserAddToBasketFromProductPage():
+class TestUserAddToBasketFromProductPage:
     @pytest.fixture(scope="function", autouse=True)
     def setup(self, browser):
         self.login_page = LoginPage(browser, LoginPageUrl.login_url)
@@ -17,17 +17,17 @@ class TestUserAddToBasketFromProductPage():
         self.login_page.register_new_user()
         self.login_page.registration_successfully_message()
 
-    def test_user_cant_see_success_message(self, browser) :
-        self.product_page = ProductPage(browser,ProductPageUrl.product_url)
+    def test_user_cant_see_success_message(self, browser):
+        self.product_page = ProductPage(browser, ProductPageUrl.product_url)
         self.product_page.open()
         self.product_page.should_not_be_success_message()
 
-
-    def test_user_can_add_product_to_basket(self,browser) :
+    def test_user_can_add_product_to_basket(self, browser):
         self.product_page = ProductPage(browser, ProductPageUrl.product_url)
         self.product_page.open()
         self.product_page.clicing_adding_button()
         self.product_page.should_be_message_about_adding()
+
 
 def test_guest_should_see_login_link_on_product_page(browser):
     page = ProductPage(browser, ProductPageUrl.product_url)

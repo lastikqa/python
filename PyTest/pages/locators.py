@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 class BasketPageLocators:
     basket_header = (By.TAG_NAME, "h1")
     basket_message = (By.CSS_SELECTOR, "div[id='content_inner'] p")
-    basket_goods=(By.XPATH,"//div/h3")
+    basket_goods = (By.XPATH, "//div/h3")
 
 
 class BasePageLocators:
@@ -27,10 +27,10 @@ class LoginPageLocators:
     login_form = (By.CSS_SELECTOR, "form[id='login_form']")
     register_form = (By.CSS_SELECTOR, "form[id='register_form']")
     register_email_address = (By.CSS_SELECTOR, "input[id='id_registration-email']")
-    register_password = (By.CSS_SELECTOR,"input[id='id_registration-password1']")
-    register_confirm_password = (By.CSS_SELECTOR,"input[id='id_registration-password2']")
-    register_button = (By.CSS_SELECTOR,"button[name='registration_submit']")
-    registration_success =(By.XPATH,"(//div[@class='alertinner wicon'])[1]")
+    register_password = (By.CSS_SELECTOR, "input[id='id_registration-password1']")
+    register_confirm_password = (By.CSS_SELECTOR, "input[id='id_registration-password2']")
+    register_button = (By.CSS_SELECTOR, "button[name='registration_submit']")
+    registration_success = (By.XPATH, "(//div[@class='alertinner wicon'])[1]")
 
 
 class ProductPageLocators:

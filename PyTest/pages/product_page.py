@@ -1,38 +1,20 @@
 
 from .base_page import BasePage
 from .locators import ProductPageLocators
-import math
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoAlertPresentException
 
 
 class ProductPage(BasePage):
     def should_be_product_page(self):
         self.should_not_be_success_message()
         self.clicing_adding_button()
-        self.solve_quiz_and_get_code()
         self.should_be_message_about_adding()
         self.should_not_message_disappeared_after_adding_product_to_basket()
 
     def clicing_adding_button(self):
         wait = WebDriverWait(self.browser, 30, poll_frequency=1)
         wait.until(EC.element_to_be_clickable(self.browser.find_element(*ProductPageLocators.add_to_basket))).click()
-
-    def solve_quiz_and_get_code(self):
-        WebDriverWait(self.browser, 2, poll_frequency=1).until(EC.alert_is_present())
-        alert = self.browser.switch_to.alert
-        x = alert.text.split(" ")[2]
-        answer = str(math.log(abs((12 * math.sin(float(x))))))
-        alert.send_keys(answer)
-        alert.accept()
-        try:
-            alert = self.browser.switch_to.alert
-            alert_text = alert.text
-            print(f"Your code: {alert_text}")
-            alert.accept()
-        except NoAlertPresentException:
-            print("No second alert presented")
 
     def should_be_message_about_adding(self):
         assert self.is_element_present(*ProductPageLocators.message_of_success), "the basket is empty"
