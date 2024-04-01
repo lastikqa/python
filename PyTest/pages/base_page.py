@@ -3,6 +3,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from PyTest.pages.locators import BasePageLocators
+from PyTest.pages.test_data import Language
+from selenium.webdriver.support.select import Select
 
 
 class BasePage:
@@ -50,6 +52,15 @@ class BasePage:
             return False
 
         return True
+
+    def change_language(self):
+        select = Select(self.browser.find_element(*BasePageLocators.language_select))
+        select.select_by_visible_text(Language.chosen_language[0])
+        self.browser.find_element(*BasePageLocators.submit_language).click()
+
+    def should_be_changed_language(self):
+        url_language = self.browser.current_url
+        assert Language.chosen_language[1] in url_language, f'the language shoul be {Language.chosen_language[0]}'
 
     def open(self):
         self.browser.get(self.url)

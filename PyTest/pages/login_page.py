@@ -27,6 +27,4 @@ class LoginPage(BasePage):
         self.browser.find_element(*LoginPageLocators.register_password).send_keys(password)
         self.browser.find_element(*LoginPageLocators.register_confirm_password).send_keys(password)
         self.browser.find_element(*LoginPageLocators.register_button).click()
-
-    def registration_successfully_message(self):
         assert self.is_element_present(*LoginPageLocators.registration_success), "The registration was failed"

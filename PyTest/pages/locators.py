@@ -15,6 +15,8 @@ class BasePageLocators:
     basket_price = (By.XPATH, "//div[@class='basket-mini pull-right hidden-xs']")
     oscar_button = (By.XPATH, "(//header//div/a)[1]")
     USER_ICON = (By.CSS_SELECTOR, ".icon-user")
+    language_select = (By.CSS_SELECTOR, "select[name='language']")
+    submit_language = (By.CSS_SELECTOR,"button[type='submit']")
 
 
 class MainPageLocators:
