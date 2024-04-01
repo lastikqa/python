@@ -11,14 +11,13 @@ class BasePageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
     LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
     basket_button = (By.CSS_SELECTOR, "a[class='btn btn-default']")
-    search_button = (By.CSS_SELECTOR, "input[type='submit']")
     basket_price = (By.XPATH, "//div[@class='basket-mini pull-right hidden-xs']")
     oscar_button = (By.XPATH, "(//header//div/a)[1]")
     USER_ICON = (By.CSS_SELECTOR, ".icon-user")
     language_select = (By.CSS_SELECTOR, "select[name='language']")
-    submit_language = (By.CSS_SELECTOR,"button[type='submit']")
-    search_input_field =(By.CSS_SELECTOR,"input[id='id_q']")
-    search_click =(By.CSS_SELECTOR,"input[type='submit']")
+    submit_language = (By.CSS_SELECTOR, "button[type='submit']")
+    search_input_field = (By.CSS_SELECTOR, "input[id='id_q']")
+    search_click = (By.CSS_SELECTOR, "input[type='submit']")
     found_product = (By.CSS_SELECTOR, "ol h3 a")
 
 
