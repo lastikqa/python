@@ -6,12 +6,12 @@ from .urls import MainPageUrl
 
 class MainPage(BasePage):
     def should_be_main_page(self):
-        if language == "en-gb" :
+        if language == "en-gb":
             self.should_be_main_page_url()
             self.should_be_welcome_text()
             self.should_be_recommended_reading()
             self.should_be_other_good_books()
-        else :
+        else:
             self.should_be_main_page_url()
 
     def should_be_main_page_url(self):

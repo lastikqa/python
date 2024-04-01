@@ -17,6 +17,9 @@ class BasePageLocators:
     USER_ICON = (By.CSS_SELECTOR, ".icon-user")
     language_select = (By.CSS_SELECTOR, "select[name='language']")
     submit_language = (By.CSS_SELECTOR,"button[type='submit']")
+    search_input_field =(By.CSS_SELECTOR,"input[id='id_q']")
+    search_click =(By.CSS_SELECTOR,"input[type='submit']")
+    found_product = (By.CSS_SELECTOR, "ol h3 a")
 
 
 class MainPageLocators:

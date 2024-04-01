@@ -30,3 +30,11 @@ def test_guest_can_change_language(browser):
     page.open()
     page.change_language()
     page.should_be_changed_language()
+
+
+@pytest.mark.search
+def test_guest_can_search_products(browser):
+    page = MainPage(browser, MainPageUrl.main_page_url)
+    page.open()
+    page.searching_products()
+    page.should_be_searched_product()

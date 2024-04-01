@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from PyTest.pages.locators import BasePageLocators
 from PyTest.pages.test_data import Language
 from selenium.webdriver.support.select import Select
+from PyTest.pages.test_data import SearchItem
 
 
 class BasePage:
@@ -60,7 +61,14 @@ class BasePage:
 
     def should_be_changed_language(self):
         url_language = self.browser.current_url
-        assert Language.chosen_language[1] in url_language, f'the language shoul be {Language.chosen_language[0]}'
+        assert Language.chosen_language[1] in url_language, f'the language should be {Language.chosen_language[0]}'
+
+    def searching_products(self):
+        self.browser.find_element(*BasePageLocators.search_input_field).send_keys(SearchItem.search_item)
+        self.browser.find_element(*BasePageLocators.search_click).click()
+
+    def should_be_searched_product(self):
+        assert self.is_element_present(*BasePageLocators.found_product), "Product was not found"
 
     def open(self):
         self.browser.get(self.url)
