@@ -9,7 +9,7 @@ def pytest_addoption(parser):
                      help="Choose language: '--language=en' or '--language=ru'")
     parser.addoption('--browser_arg', action='store', default="disable-blink-features=AutomationControlled",
                      help='Example : --browser_arg=disable-blink-features=AutomationControlled')
-    parser.addoption('--browser_headless', action='store', default="",
+    parser.addoption('--browser_headless', action='store', default="headless",
                      help='use space to disable --browser_headless=" "')
 
 
