@@ -14,6 +14,9 @@ class MainPage(BasePage):
         else:
             self.should_be_main_page_url()
 
+    def adding_to_basket_from_main_page(self):
+        self.browser.find_element(*MainPageLocators.main_page_adding_to_basket).click()
+
     def should_be_main_page_url(self):
         main_url = self.browser.current_url
 

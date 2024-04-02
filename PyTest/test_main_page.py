@@ -3,6 +3,7 @@ from .pages.basket_page import BasketPage
 from .pages.main_page import MainPage
 from .pages.login_page import LoginPage
 from .pages.urls import MainPageUrl
+from .pages.urls import BasketPageUrl
 
 
 @pytest.mark.login
@@ -38,3 +39,15 @@ def test_guest_can_search_products(browser):
     page.open()
     page.searching_products()
     page.should_be_searched_product()
+
+
+@pytest.mark.add_to_basket
+def test_guest_can_add_to_basket_from_main_page(browser):
+    page = MainPage(browser, MainPageUrl.main_page_url)
+    page.open()
+    page.change_language()
+    page.adding_to_basket_from_main_page()
+    page.go_to_basket()
+    basket = BasketPage(browser, BasketPageUrl.basket_url)
+    basket.open()
+    basket.should_be_goods_in_basket()

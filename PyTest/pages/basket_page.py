@@ -19,7 +19,7 @@ class BasketPage(BasePage):
                                                      f"The header should be 'Корзина'")
         elif language == "en-gb":
             assert basket_header_text == "Basket", f"Your header is {basket_header_text}, The header should be 'Basket'"
-        else :
+        else:
             print(f" the {language} localisation is not supported")
 
     def should_be_empty_basket_message(self):
@@ -27,3 +27,7 @@ class BasketPage(BasePage):
 
     def should_be_no_goods_in_basket(self):
         assert self.is_not_element_present(*BasketPageLocators.basket_goods), "Goods should not be in basket"
+
+    def should_be_goods_in_basket(self):
+        assert self.is_element_present(*BasketPageLocators.basket_goods), ("The added goods are not in basket, "
+                                                                           "there should be added goods")

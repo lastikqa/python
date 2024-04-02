@@ -25,6 +25,7 @@ class MainPageLocators:
     welcome_text = (By.XPATH, "(//div[@class='sub-header'])[1]/h2")
     recommended_reading = (By.XPATH, "(//div[@class='sub-header'])[2]/h2")
     other_good_books = (By.XPATH, "(//div[@class='sub-header'])[3]/h3")
+    main_page_adding_to_basket=(By.XPATH, "(//button[@class='btn btn-primary btn-block'])[1]")
 
 
 class LoginPageLocators:
