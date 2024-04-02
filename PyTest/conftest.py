@@ -10,7 +10,7 @@ def pytest_addoption(parser):
     parser.addoption('--browser_arg', action='store', default="disable-blink-features=AutomationControlled",
                      help='Example : --browser_arg=disable-blink-features=AutomationControlled')
     parser.addoption('--browser_headless', action='store', default="headless",
-                     help='use space to disable --browser_headless=" "')
+                     help='to disable --browser_headless=.')
 
 
 @pytest.fixture(scope="function")
