@@ -7,10 +7,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class ProductPage(BasePage):
     def should_be_product_page(self):
-        self.should_not_be_success_message()
-        self.clicing_adding_button()
-        self.should_be_message_about_adding()
-        self.should_not_message_disappeared_after_adding_product_to_basket()
+        self.should_be_product_page_url()
+
+    def should_be_product_page_url(self):
+        text_url=self.browser.current_url
+        assert "catalogue" in text_url, "the page should be  product page"
 
     def clicing_adding_button(self):
         wait = WebDriverWait(self.browser, 30, poll_frequency=1)
