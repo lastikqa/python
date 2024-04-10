@@ -10,7 +10,7 @@ class ProductPage(BasePage):
         self.should_be_product_page_url()
 
     def should_be_product_page_url(self):
-        text_url=self.browser.current_url
+        text_url = self.browser.current_url
         assert "catalogue" in text_url, "the page should be  product page"
 
     def clicing_adding_button(self):

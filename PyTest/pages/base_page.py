@@ -4,9 +4,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from PyTest.pages.locators import BasePageLocators
-from PyTest.pages.test_data import Language
+from PyTest.pages.test_data import BasePageTestData
 from selenium.webdriver.support.select import Select
-from PyTest.pages.test_data import SearchItem
+
 import math
 
 
@@ -72,15 +72,15 @@ class BasePage:
 
     def change_language(self):
         select = Select(self.browser.find_element(*BasePageLocators.language_select))
-        select.select_by_visible_text(Language.chosen_language[0])
+        select.select_by_visible_text(BasePageTestData.chosen_language[0])
         self.browser.find_element(*BasePageLocators.submit_language).click()
 
     def should_be_changed_language(self):
         url_language = self.browser.current_url
-        assert Language.chosen_language[1] in url_language, f'the language should be {Language.chosen_language[0]}'
+        assert BasePageTestData.chosen_language[1] in url_language, f'the language should be {BasePageTestData.chosen_language[0]}'
 
     def searching_products(self):
-        self.browser.find_element(*BasePageLocators.search_input_field).send_keys(SearchItem.search_item)
+        self.browser.find_element(*BasePageLocators.search_input_field).send_keys(BasePageTestData.search_item)
         self.browser.find_element(*BasePageLocators.search_click).click()
 
     def should_be_searched_product(self):

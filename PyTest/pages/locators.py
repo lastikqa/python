@@ -36,6 +36,10 @@ class LoginPageLocators:
     register_confirm_password = (By.CSS_SELECTOR, "input[id='id_registration-password2']")
     register_button = (By.CSS_SELECTOR, "button[name='registration_submit']")
     registration_success = (By.XPATH, "(//div[@class='alertinner wicon'])[1]")
+    login_email = (By.CSS_SELECTOR, "input[id='id_login-username']")
+    login_password = (By.CSS_SELECTOR, "input[id='id_login-password']")
+    login_button = (By.CSS_SELECTOR, "button[name='login_submit']")
+    login_success = (By.CSS_SELECTOR, "div[class='alertinner wicon']")
 
 
 class ProductPageLocators:
