@@ -1,1 +1,1 @@
-Just some of my awful python selenium
+Just some of my python selenium
