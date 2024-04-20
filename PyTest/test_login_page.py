@@ -29,4 +29,3 @@ def test_guest_cannot_be_authorizated_without_password(browser):
     login_page.putting_login_email()
     login_page.clicking_login_button()
     login_page.should_not_be_message_about_autorisation()
-
