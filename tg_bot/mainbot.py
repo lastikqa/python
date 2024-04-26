@@ -3,11 +3,13 @@ from aiogram.filters import Command
 from aiogram.types import Message
 import random
 import config
-from data_base.data_base import *
-# Вместо BOT TOKEN HERE нужно вставить токен вашего бота, полученный у @BotFather
+from data_base.bot_data_base import *
+from lexicon.bot_lexicon import BotLexocon
+# Вместо config.token нужно вставить токен вашего бота, полученный у @BotFather
 BOT_TOKEN = config.token
 
-# Создаем объекты бота и диспетчера
+creating_gamers_db()
+
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
@@ -15,9 +17,9 @@ dp = Dispatcher()
 
 
 
-creating_gamers_db()
+
 def get_random_number() -> int:
-    """the function just hets randon number for bot"""
+    """the function just gets randon number for bot to user guess"""
     return random.randint(1, 100)
 
 
@@ -28,85 +30,95 @@ async def process_start_command(message: Message):
     user_id = message.from_user.id
     user_in_db = looking_for_gamer_in_db(user_id)
     if user_in_db == True:
-        await message.answer('Хочешь поиграть в "Угадай число\n отправь "/help" чтоб узнать больше?')
+        lang=checking_user_language(message.from_user.id)
+        await message.answer(BotLexocon.help_message[lang])
     elif user_in_db == False:
         creating_object_gamer_in_db(user_id,first_name)
-        await message.answer('''Привет новенький.,                        
-                            \n Хочешь поиграть в "Угадай число"?
-                            \n отправь "/help" чтоб узнать больше''')
+        await message.answer(BotLexocon.start_newbie)
 
 
 @dp.message(Command(commands=['help']))
 async def process_help_command(message: Message):
-    print(message.from_user.id,message.from_user.first_name)
-    await message.answer(
-        '''Тебе нужно загадать число от 1 до 100.
-        \nВсего у тебя есть 5 попыток.'
-        \nЧто-бы начать играть напиши "Да", "Игра"'
-        \nЧто-бы отменить игру "/cancel"
-        \nЧто-бы увидеть статистику отправь "/stat"'''
-    )
+    lang=checking_user_language(message.from_user.id)
+    await message.answer(BotLexocon.help_message[lang]) #{checking_user_win_games(message.from_user.id)}
 
 
 @dp.message(Command(commands=["stat"]))
 async def process_start_command(message: Message):
-    await message.answer(f"""\nВсего игр {checking_user_total_games(message.from_user.id)}
-                            \nКолличество побед {checking_user_win_games(message.from_user.id)}""")
+    lang=checking_user_language(message.from_user.id)
+    await message.answer(BotLexocon.stat_message[lang].split(".")[0]+f" {checking_user_total_games(message.from_user.id)}"+
+                         BotLexocon.stat_message[lang].split(".")[1]+f"{checking_user_win_games(message.from_user.id)}")
 
-message_agreed: list[str] = ["да", "давай", "сыграем", "игра"]
-message_disagreed: list[str] = ["нет", "не"]
+message_agreed: list[str] = ["game", "игра"]
+message_disagreed: list[str] = ["нет", "no"]
 
 
 @dp.message(Command(commands=['cancel']))
 async def process_help_command(message: Message):
-    print(checking_game_status(message.from_user.id))
+    lang=checking_user_language(message.from_user.id)
     updating_game_status(game_status=0,user_id=message.from_user.id)
-    await message.answer(text=f"Очень жаль сиграет в другой раз")
+    await message.answer(text=BotLexocon.cancel_message[lang])
 
-
+@dp.message(Command(commands=['attempts']))
+async def process_help_command(message: Message):
+    try:
+        lang = checking_user_language(message.from_user.id)
+        user_attempts=message.text.split()[1]
+    except IndexError:
+        await message.answer(text=BotLexocon.message_attepts[lang])
+    if user_attempts.isdigit() and user_attempts.isalpha() == False and checking_game_status(message.from_user.id) == False:
+        user_attempts=int(user_attempts)
+        if 1 < user_attempts <=10:
+            setting_user_attempts(user_id=message.from_user.id, attempts = user_attempts)
+    else :
+        await message.answer(text=BotLexocon.message_attepts[lang])
+@dp.message(Command(commands=['setlang']))
+async def process_help_command(message: Message):
+    lang=["english","russian"]
+    try:
+        user_lang = message.text.lower().split()[1]
+    except IndexError:
+        await message.answer(text=BotLexocon.start_newbie)
+    if user_lang in lang:
+        setting_user_language(user_id=message.from_user.id,language=lang.index(user_lang))
+        lang=checking_user_language(message.from_user.id)
+        await message.answer(text=BotLexocon.help_message[lang])
+    else:
+        await message.answer(text=BotLexocon.start_newbie)
 @dp.message()
 async def game(message: Message):
     user_game_status=checking_game_status(message.from_user.id)
-    print(user_game_status)
-    if message.text.lower() =="игра" and user_game_status==False:
-        user=updating_game_status(game_status=1, user_id=message.from_user.id)
+    lang=checking_user_language(message.from_user.id)
+    if message.text.lower() in message_agreed and user_game_status == False:
+        user = updating_game_status(game_status=1, user_id=message.from_user.id)
         user=updating_user_total_games(user_id=message.from_user.id)
         bot_number=get_random_number()
         setting_bot_number(user_id=message.from_user.id,bot_number=bot_number)
-        setting_user_attempts(user_id=message.from_user.id)
-        await message.answer(text="""Отлично. Играем. 
-                                     \nОтправь число от 1 до 100.""")
+        await message.answer(text=BotLexocon.game_message[lang])
     elif checking_game_status(message.from_user.id)==True and checking_user_attempts(message.from_user.id) > 0:
         if message.text.isalpha() != True and message.text.isdigit() == True and 1 <= int(message.text) <= 100:
             reducing_user_attempts(user_id=message.from_user.id)
             if int(message.text) < checking_bot_number(message.from_user.id):
-                await message.answer(text="Мое число больше")
+                await message.answer(text=BotLexocon.number_higher[lang])
             elif int(message.text) > checking_bot_number(message.from_user.id):
-                await message.answer(text="Мое число меньше")
+                await message.answer(text=BotLexocon.number_lower[lang])
             elif int(message.text) == checking_bot_number(message.from_user.id):
                 updating_user_win_games(message.from_user.id)
                 updating_game_status(game_status=0,user_id=message.from_user.id)
-                await message.answer(text=f"""Отлично ты выиграл
-                                           \nВсего игр {checking_user_total_games(message.from_user.id)}
-                                            \nКолличество побед {checking_user_win_games(message.from_user.id)} 
-                                            \nОтправь 'Игра' чтобы продолжить игру""")
+                await message.answer(text=BotLexocon.win_message[lang])
         else:
-            await message.answer(text="Число должно быть от 1 до 100")
+            await message.answer(text=BotLexocon.needed_number[lang])
     elif checking_user_attempts(message.from_user.id) == 0 and message.text.isalpha() != True and checking_bot_number(message.from_user.id) != int(message.text):
         updating_game_status(game_status=0, user_id=message.from_user.id)
-       #attempts
-        await message.answer(text=f"""Загаданное число {checking_bot_number(message.from_user.id)} 
-                                                    \nВсего игр {checking_user_total_games(message.from_user.id)}
-                                                    \nКолличество побед {checking_user_win_games(message.from_user.id)} 
-                                                    \nОтправь 'Игра' чтобы продолжить игру""")
+        setting_user_attempts(user_id=message.from_user.id)
+        await message.answer(text=BotLexocon.lose_message[lang])
 
     elif message.text.lower() in message_disagreed:
-        await message.answer(text="Ну может все таки сыграем?")
+        await message.answer(text=BotLexocon.disagred_message[lang])
     elif checking_game_status(message.from_user.id) == 0:
-        await message.answer(text="""\nДавай сыграем?
-                                    \nОтправь 'игра' что-бы начать играть""")
+        await message.answer(text=BotLexocon.game_message[lang])
     else:
-        await message.answer(text="""Отправь /help для информации""")
+        await message.answer(text=BotLexocon.help_message[lang])
 
 
 if __name__ == '__main__':
