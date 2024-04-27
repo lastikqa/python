@@ -19,8 +19,8 @@ class BotLexocon:
                       """Great.
                     \nSend a number from 1 to 100.""")
     win_message=("Отично ты выиграл","You are great. You won")
-    lose_message=("Мое число было"
-                  "\nМожет в другой раз ","My number was"
+    lose_message=("Мое число было."
+                  "\nМожет в тебе повезет другой раз ","My number was."
                                           "\n Have more luck next time")
     number_lower = ("Мое число меньше","My number is lower")
     number_higher = ("Мое число больше","My number is higher")

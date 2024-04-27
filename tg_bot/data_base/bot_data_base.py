@@ -171,7 +171,7 @@ def checking_bot_number(user_id: int, database_name: str = database_name):
     bot_number = int(cursor.fetchone()[0])
     return bot_number
 
-def setting_user_language(user_id: int, language: str, database_name: str = database_name):
+def setting_user_language(user_id: int, language: int, database_name: str = database_name):
     """The function updates user language id database"""
     lang=0
     if language=="english" :
