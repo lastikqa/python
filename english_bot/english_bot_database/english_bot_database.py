@@ -181,12 +181,28 @@ class EnglishBotDatabase():
 
     def updating_score_count(self, user_id: int,win: int = 0,  database_name: str = database_name):
         """the function updates counter of user wins if win +=1, else win =0"""
-        if win == 0:
-            win = 0
-        elif win == 1:
-            win = 1
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET counter_user_score = ? WHERE user_id = ?', (win, user_id))
+        connect.commit()
+        connect.close()
+
+    def checking_counter_user_score(self,  user_id: int, database_name: str = database_name)->int:
+        """the function check user score"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('SELECT counter_user_score FROM Users WHERE user_id=?', (user_id,))
+        counter_user_score = cursor.fetchone()
+        connect.close()
+        try:
+            return int(counter_user_score[0])
+        except TypeError:
+            return None
+
+    def updating_user_score(self, user_id: int, counter: int , database_name: str = database_name):
+        """the function updates user_score in database"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('UPDATE Users SET user_score = ? WHERE user_id = ?', (counter, user_id))
         connect.commit()
         connect.close()

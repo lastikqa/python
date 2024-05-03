@@ -50,11 +50,20 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data == user_question:
+        win=(database.checking_counter_user_score(user_id=user_id))+1
+        database.updating_score_count(user_id=user_id,win=win)
         question, variants = game.gusesing_game(user_id, user_param)
         keyboard = create_inline_kb(2, *variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
-    #elif callback.data in variants and callback.data != user_question :
-        #pass
+    else:
+        user_score = database.checking_user_score(user_id=user_id)
+        counter_user_score = database.checking_counter_user_score(user_id=user_id)
+        if counter_user_score > user_score:
+            database.updating_user_score(user_id=user_id, counter=counter_user_score)
+        database.updating_score_count(user_id=user_id)
+
+
+
     await callback.answer()
 
 

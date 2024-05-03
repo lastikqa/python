@@ -31,7 +31,6 @@ class Games():
         response = requests.get(GuessingGameUrls.url, headers = headers, params=params).json()
         question = response["question"]
         answer = response["answer"]
-        print(response["variants"], "resp")
         variants = list(response["variants"])
         return question, answer, variants
 
