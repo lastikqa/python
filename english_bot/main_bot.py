@@ -1,11 +1,12 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message
+from english_bot.keyboards.keyboards import set_main_menu
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import game_handlers
 from handlers import  user_handlers
+
 # Вместо config.token нужно вставить токен вашего бота, полученный у @BotFather
 BOT_TOKEN = config.token
 
@@ -20,9 +21,11 @@ async def main():
     # Регистриуем роутеры в диспетчере
     dp.include_router(user_handlers.router)
     dp.include_router(game_handlers.router)
-    # Пропускаем накопившиеся апдейты и запускаем polling
+
+    await set_main_menu(bot)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
+
 asyncio.run(main())
 
 

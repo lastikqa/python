@@ -1,19 +1,16 @@
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram import Bot
+from aiogram.types import BotCommand
+from english_bot.lexicon.lexicon import menu_keyboard
 
 
-
-# Функция для формирования инлайн-клавиатуры на лету
 def create_inline_kb(width: int,
                      *args: str,
                      **kwargs: str) -> InlineKeyboardMarkup:
-    # Инициализируем билдер
     kb_builder = InlineKeyboardBuilder()
-    # Инициализируем список для кнопок
     buttons: list[InlineKeyboardButton] = []
-
-    # Заполняем список кнопками из аргументов args и kwargs
     if args:
         for button in args:
             buttons.append(InlineKeyboardButton(
@@ -24,9 +21,14 @@ def create_inline_kb(width: int,
             buttons.append(InlineKeyboardButton(
                 text=text,
                 callback_data=button))
-
-    # Распаковываем список с кнопками в билдер методом row c параметром width
     kb_builder.row(*buttons, width=width)
-
-    # Возвращаем объект инлайн-клавиатуры
     return kb_builder.as_markup()
+
+async def set_main_menu(bot: Bot):
+    main_menu_commands = [
+        BotCommand(
+            command=command,
+            description=description
+        ) for command, description in menu_keyboard.items()
+    ]
+    await bot.set_my_commands(main_menu_commands)
