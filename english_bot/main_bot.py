@@ -5,7 +5,7 @@ from english_bot.keyboards.keyboards import set_main_menu
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import game_handlers
-from handlers import  user_handlers
+from handlers import user_handlers
 
 # Вместо config.token нужно вставить токен вашего бота, полученный у @BotFather
 BOT_TOKEN = config.token

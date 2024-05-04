@@ -14,7 +14,7 @@ def create_inline_kb(width: int,
     if args:
         for button in args:
             buttons.append(InlineKeyboardButton(
-                text=button ,
+                text=button,
                 callback_data=button))
     if kwargs:
         for text, button in kwargs.items():
