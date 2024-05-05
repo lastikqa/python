@@ -24,7 +24,7 @@ class Games():
         database.updating_question(user_id=user_id, question=question)
         return question, variants
 
-    def getting_data_guessing_game(self,user_param: str, headers: str=GuessingGameHeaders.headers, params :str = GuessingGameHeaders.params_game, translation : str = "rus") -> tuple:
+    def getting_data_guessing_game(user_param: str, headers: str=GuessingGameHeaders.headers, params :str = GuessingGameHeaders.params_game, translation : str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"]=user_param
         params["first"]=translation

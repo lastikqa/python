@@ -7,6 +7,7 @@ from english_bot.lexicon.lexicon import menu_keyboard
 
 
 def create_inline_kb(width: int,
+                     last_btn: str | None = "Menu Button",
                      *args: str,
                      **kwargs: str) -> InlineKeyboardMarkup:
     kb_builder = InlineKeyboardBuilder()
@@ -22,6 +23,11 @@ def create_inline_kb(width: int,
                 text=text,
                 callback_data=button))
     kb_builder.row(*buttons, width=width)
+    if last_btn:
+        kb_builder.row(InlineKeyboardButton(
+            text=last_btn,
+            callback_data='menu_button'
+        ))
     return kb_builder.as_markup()
 
 async def set_main_menu(bot: Bot):

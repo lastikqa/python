@@ -21,38 +21,38 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
         await callback.answer()
 
     if callback.data == "guess_word":
-        keyboard = create_inline_kb(2, **guess_word_keyboard)
+        keyboard = create_inline_kb(2,last_button="Menu Button", **guess_word_keyboard)
         await callback.message.edit_text(text="Choose parts of speech",reply_markup=keyboard)
         await callback.answer()
 
     if callback.data=="/g" :
         user_param = "g" # verbs
         question,variants=game.gusesing_game(user_id,user_param)
-        keyboard=create_inline_kb(2,*variants)
+        keyboard=create_inline_kb(2,last_button="Menu Button",*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data=="/s" :
         user_param = "s"
         question,variants=game.gusesing_game(user_id,user_param)
-        keyboard=create_inline_kb(2,*variants)
+        keyboard=create_inline_kb(2,last_button="Menu Button",*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data=="/c" :
         user_param = "c"
         question,variants=game.gusesing_game(user_id,user_param)
-        keyboard=create_inline_kb(2,*variants)
+        keyboard=create_inline_kb(2,last_button="Menu Button",*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data=="/p" :
         user_param = "p"
         question,variants=game.gusesing_game(user_id,user_param)
-        keyboard=create_inline_kb(2,*variants)
+        keyboard=create_inline_kb(2,last_button="Menu Button",*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data=="/m" :
         user_param = "m"
         question,variants=game.gusesing_game(user_id,user_param)
-        keyboard=create_inline_kb(2,*variants)
+        keyboard=create_inline_kb(2,last_button="Menu Button",*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data=="word_constructor":
@@ -64,7 +64,7 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
         win = (database.checking_counter_user_score(user_id=user_id))+1
         database.updating_score_count(user_id=user_id,win=win)
         question, variants = game.gusesing_game(user_id, user_param)
-        keyboard = create_inline_kb(2, *variants)
+        keyboard = create_inline_kb(2, last_button="Menu Button" *variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
     else:
         user_score = database.checking_user_score(user_id=user_id)
