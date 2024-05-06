@@ -37,20 +37,24 @@ class Games():
         variants = list(response["variants"])
         return question, answer, variants
 
-    def getting_constcuctor_games(self,translation: str="rus", user_param: str="v",  params :str = GuessingGameHeaders.params_game,
+    def getting_constcuctor_games(translation: str="rus", user_param: str="v",  params :str = GuessingGameHeaders.params_game,
                                   headers: str=GuessingGameHeaders.headers):
+
         params["slovar"] = user_param
         params["first"] = translation
         question = ""
         answer = ""
-        response = requests.get(GuessingGameUrls.url, headers=headers, params=params).json()
-        question = response["question"]
-        answer = response["answer"]
-        print(answer)
-        variants=Games.random_constructor_variants(answer)
-        return question, answer, variants
+        try:
+            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies, headers=headers).json()
+        except requests.exceptions.JSONDecodeError:
+            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies,
+                                    headers=headers).json()
+        question = response["answer"]
+        answer = response["question"]
+        variants=Games.random_constructor_variants(answer=answer)
+        return  question,answer, variants
 
-    def random_constructor_variants(self, answer: str) -> list:
+    def random_constructor_variants(answer: str) -> list:
         """the function gets strings and splits them into lists
         and return the lists with random words of letters of the string"""
 
@@ -65,4 +69,13 @@ class Games():
                 variants.append(item)
         return variants
 
-
+    def constructor_games(self,user_id,user_param):
+        database = EnglishBotDatabase(user_id)
+        database.updating_user_game(user_id, game=user_param)
+        question,answer,variants = Games.getting_constcuctor_games( user_param=user_param)
+        print(question)
+        database.updating_answer(user_id, answer=answer )
+        database.updating_variants_for_user(user_id, variants=variants)
+        database.updating_user_variants(user_id, variants)
+        database.updating_question(user_id=user_id, question=question)
+        return variants, question

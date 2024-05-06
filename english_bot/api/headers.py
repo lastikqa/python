@@ -25,3 +25,6 @@ class GuessingGameHeaders:
     'rand': '0.11160402868355046',
     }
 
+    cookies = {
+        'FCNEC': '%5B%5B%22AKsRol9Gn13G8Ikqu5qCkcPltDM_fUtc6Sj1CzzPWDGj4fmoSMMxe7D0ifJgfAByCrDTPwXl4e1QbR4pyIksTaKiQRFFKKZsF5F0jYP2Z7E03IprqsR1Z_prXYJGGyCoNTesf3sxcdahEYD5REqW2Cry9gJtXln0qw%3D%3D%22%5D%5D',
+    }

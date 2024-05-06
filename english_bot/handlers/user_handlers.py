@@ -3,7 +3,7 @@ from english_bot.config import token
 from aiogram.filters import Command, CommandStart, Filter
 from aiogram.types import Message
 from english_bot.keyboards.keyboards import create_inline_kb
-from english_bot.lexicon.lexicon import start_keyboard, help_message, menu_button
+from english_bot.lexicon.lexicon import start_keyboard, help_message,default_menu
 from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
 from aiogram import F, Router
 
@@ -32,7 +32,7 @@ async def menu_buttons(message: Message):
     mesaage_id=message.message_id
     chat_id=message.chat.id
     if message.text=="/help":
-        keyboard = create_inline_kb(1, **menu_button)
+        keyboard = create_inline_kb(1, last_btn=default_menu)
         await message.answer(text=help_message,parse_mode="MarkdownV2", reply_markup=keyboard)
     if message.text =="/translation":
         database=EnglishBotDatabase(message.from_user.id)

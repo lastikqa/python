@@ -20,6 +20,7 @@ class EnglishBotDatabase():
                     game TEXT,
                     question TEXT,
                     answer TEXT,
+                    user_answer TEXT,
                     variants TEXT,
                     user_variants TEXT,
                     user_score INTEGER,
@@ -35,9 +36,9 @@ class EnglishBotDatabase():
         """Create a new object in db. the function gets user id from telegram and username"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
-        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, question,answer, variants, user_variants, user_score, counter_user_score ) '
-                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                       (user_id, first_name, "rus", None, None, None, None, None, 0, 0))
+        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, question,answer, user_answer, variants, user_variants, user_score, counter_user_score ) '
+                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
+                       (user_id, first_name, "rus", None, None, None, None, None,None, 0, 0))
         connect.commit()
         connect.close()
 
@@ -55,7 +56,7 @@ class EnglishBotDatabase():
             return False
 
 
-    def checking_user_game(self, user_id: int, database_name: str = database_name)->str:
+    def checking_user_game(self, user_id: int, database_name: str = database_name)->str | None:
         """the function cheks game which user is playing and returns the name of the game"""
         connect=sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -67,7 +68,7 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_answer(self,answer: str, user_id: int, database_name: str = database_name):
+    def updating_answer(self, user_id: int ,answer: str, database_name: str = database_name):
         """the function updated  answer for the game"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -137,7 +138,7 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_variants_for_user(self,variants:str,user_id:int, database_name: str = database_name):
+    def updating_variants_for_user(self,user_id:int,variants: list, database_name: str = database_name):
         """the function updayes user game"""
         variants = " ".join(variants)
         connect = sqlite3.connect(database_name)
@@ -158,12 +159,12 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_user_variants(self, variants: str, user_id: int, database_name: str = database_name):
-        """the function updayes user game"""
-        variants = " ".join(variants)
+    def updating_user_variants(self, user_id: int, var: list, database_name: str = database_name):
+        """the function """
+        var = " ".join(var)
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
-        cursor.execute('UPDATE Users SET user_variants = ? WHERE user_id = ?', (variants, user_id))
+        cursor.execute('UPDATE Users SET user_variants = ? WHERE user_id = ?', (var, user_id))
         connect.commit()
         connect.close()
 
@@ -206,3 +207,38 @@ class EnglishBotDatabase():
         cursor.execute('UPDATE Users SET user_score = ? WHERE user_id = ?', (counter, user_id))
         connect.commit()
         connect.close()
+
+    @staticmethod
+    def checking_user_answer(user_id: int, database_name: str = database_name) -> list | None:
+        """the function checks user answers and returns a list of that"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('SELECT user_answer FROM Users WHERE user_id=?', (user_id,))
+        user_answer = cursor.fetchone()
+        connect.close()
+        return user_answer[0]
+
+    def updating_user_answer(self, user_id: int,user_answer: str, database_name : str = database_name):
+        """the functions updates variant of user answer"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('UPDATE Users SET user_answer = ? WHERE user_id = ?', (user_answer, user_id))
+        connect.commit()
+        connect.close()
+
+    def checking_user_variants(self,user_id: int, database_name: str=database_name)-> list:
+        """the function checks available variants for user and returns list of that """
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('SELECT user_variants FROM Users WHERE user_id=?', (user_id,))
+        user_variants = cursor.fetchone()
+        connect.close()
+        try:
+            if " " in user_variants[0]:
+                user_variants = user_variants[0].split()
+                return user_variants
+            else:
+                user_variants = list(user_variants)
+                return user_variants
+        except TypeError:
+            return None
