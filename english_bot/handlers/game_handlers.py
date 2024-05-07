@@ -1,7 +1,9 @@
+import aiogram.exceptions
 from aiogram import Router
 from english_bot.keyboards.keyboards import create_inline_kb
 from english_bot.lexicon.lexicon import start_keyboard, guess_word_keyboard,default_menu
 from aiogram.types import CallbackQuery
+from aiogram.exceptions import TelegramBadRequest
 from english_bot.games.games import Games
 from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
 router = Router()
