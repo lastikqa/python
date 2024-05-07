@@ -7,7 +7,7 @@ from english_bot.lexicon.lexicon import menu_keyboard
 
 
 def create_inline_kb(width: int,
-                     last_btn: str  = None,
+                     last_btn: str | None  = None,
                      *args: str,
                      **kwargs: str
                     ) -> InlineKeyboardMarkup:

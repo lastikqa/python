@@ -159,7 +159,7 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_user_variants(self, user_id: int, var: list, database_name: str = database_name):
+    def updating_user_variants(self, user_id: int, var: list | None = None, database_name: str = database_name):
         """the function """
         var = " ".join(var)
         connect = sqlite3.connect(database_name)
@@ -209,16 +209,20 @@ class EnglishBotDatabase():
         connect.close()
 
     @staticmethod
-    def checking_user_answer(user_id: int, database_name: str = database_name) -> list | None:
-        """the function checks user answers and returns a list of that"""
+    def checking_user_answer(user_id: int, database_name: str = database_name) -> str | None:
+        """the function checks user answers and returns a str"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT user_answer FROM Users WHERE user_id=?', (user_id,))
         user_answer = cursor.fetchone()
         connect.close()
-        return user_answer[0]
+        if user_answer[0] is None:
+            user_answer = ""
+            return user_answer
+        else:
+            return user_answer[0]
 
-    def updating_user_answer(self, user_id: int,user_answer: str, database_name : str = database_name):
+    def updating_user_answer(self, user_id: int,user_answer: str | None=None, database_name : str = database_name):
         """the functions updates variant of user answer"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
