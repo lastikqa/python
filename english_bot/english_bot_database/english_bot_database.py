@@ -38,7 +38,7 @@ class EnglishBotDatabase():
         cursor = connect.cursor()
         cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, question,answer, user_answer, variants, user_variants, user_score, counter_user_score ) '
                        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                       (user_id, first_name, "rus", None, None, None, None, None,None, 0, 0))
+                       (user_id, first_name, "rus", "", "", "", "", "","", 0, 0))
         connect.commit()
         connect.close()
 
