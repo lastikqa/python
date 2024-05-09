@@ -23,7 +23,6 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
 
 
 
-
     if callback.data == "menu_button":
         keyboard = create_inline_kb(1, **start_keyboard)
         await callback.message.edit_text(text="Hello. Choose something to play", reply_markup=keyboard)
@@ -65,14 +64,20 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
         keyboard=create_inline_kb(2,default_menu,*variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
-    if callback.data == "v":
+    if callback.data == "/v":
         user_param = "v"
         database.updating_user_answer(user_id)
         variants,question = game.constructor_games(user_id=user_id, user_param=user_param)
         keyboard = create_inline_kb(2,default_menu ,*variants)
         await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
 
-    if callback.data == answer and game_status != "v":
+    if callback.data=="word_constructor":
+        database.updating_user_answer(user_id)
+        question, variants = game.word_constructor(user_id)
+        keyboard = create_inline_kb(2, default_menu, *variants)
+        await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+
+    if callback.data == answer and game_status != "v" and game_status != "word_constructor":
         win = (database.checking_counter_user_score(user_id=user_id))+1
         database.updating_score_count(user_id=user_id,win=win)
         question, variants = game.gusesing_game(user_id, user_param)
@@ -94,32 +99,68 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
             user = database.checking_user_variants(user_id)
             user_ans = database.checking_user_answer(user_id)
             keyboard = create_inline_kb(2, default_menu, *user)
-            print(callback.data)
             await callback.message.edit_text(text=f"{user_question} \n{user_ans} "
                                              , reply_markup=keyboard)
         except TelegramBadRequest:
-            user_answer = database.checking_user_answer(user_id)
-            answer = database.checking_user_answer(user_id)
-            print("yes")
+            user_answer = database.checking_user_answer(user_id).strip()
+            answer = database.checking_answer(user_id)
             if user_answer == answer and len(user_variants)==0:
-                print(answer, user_answer, sep="\n")
+                database.updating_user_answer(user_id)
                 win = (database.checking_counter_user_score(user_id=user_id)) + 1
                 database.updating_score_count(user_id=user_id, win=win)
                 user_param = "v"
                 variants, question = game.constructor_games(user_id=user_id, user_param=user_param)
                 keyboard = create_inline_kb(2, default_menu, *variants)
                 await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+            else:
+                database.updating_user_answer(user_id)
+                user_score = database.checking_user_score(user_id=user_id)
+                counter_user_score = database.checking_counter_user_score(user_id=user_id)
+                database.updating_user_variants(user_id,variants)
+                if counter_user_score > user_score:
+                    database.updating_user_score(user_id=user_id, counter=counter_user_score)
+                database.updating_score_count(user_id=user_id)
+                keyboard = create_inline_kb(2, default_menu, *variants)
+                await callback.message.edit_text(text=f"'{user_question}'", reply_markup=keyboard)
+
+    if game_status == "word_constructor" and callback.data in user_variants:
+        try:
+            user_variants.remove(callback.data)
+            database.updating_user_variants(user_id, user_variants)
+            if callback.data == "_":
+                data = " "
+                user = (database.checking_user_answer(user_id=user_id)  + data)
+            else:
+                user = (database.checking_user_answer(user_id=user_id) + callback.data)
+            database.updating_user_answer(user_id=user_id, user_answer=user)
+            user = database.checking_user_variants(user_id)
+            user_ans = database.checking_user_answer(user_id)
+            keyboard = create_inline_kb(2, default_menu, *user)
+            await callback.message.edit_text(text=f"{user_question} \n{user_ans} "
+                                             , reply_markup=keyboard)
+        except TelegramBadRequest:
+            user_answer = database.checking_user_answer(user_id).strip()
+            answer = database.checking_answer(user_id)
+            if user_answer == answer and len(user_variants) == 0:
+                database.updating_user_answer(user_id)
+                win = (database.checking_counter_user_score(user_id=user_id)) + 1
+                database.updating_score_count(user_id=user_id, win=win)
+                database.updating_user_answer(user_id)
+                question, variants = game.word_constructor(user_id)
+                keyboard = create_inline_kb(2, default_menu, *variants)
+                await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+            else:
+                database.updating_user_answer(user_id)
+                user_score = database.checking_user_score(user_id=user_id)
+                counter_user_score = database.checking_counter_user_score(user_id=user_id)
+                database.updating_user_variants(user_id, variants)
+                if counter_user_score > user_score:
+                    database.updating_user_score(user_id=user_id, counter=counter_user_score)
+                database.updating_score_count(user_id=user_id)
+                keyboard = create_inline_kb(2, default_menu, *variants)
+                await callback.message.edit_text(text=f"'{user_question}'", reply_markup=keyboard)
 
 
-        """else:
-            database.updating_user_answer(user_id)
-            user_score = database.checking_user_score(user_id=user_id)
-            counter_user_score = database.checking_counter_user_score(user_id=user_id)
-            if counter_user_score > user_score:
-                database.updating_user_score(user_id=user_id, counter=counter_user_score)
-            database.updating_score_count(user_id=user_id)
-            keyboard = create_inline_kb(2, default_menu, *variants)
-            await callback.message.edit_text(text=f"'{user_question}'", reply_markup=keyboard)"""
     await callback.answer()
 
 

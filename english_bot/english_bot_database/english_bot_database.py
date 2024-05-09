@@ -134,7 +134,7 @@ class EnglishBotDatabase():
         variants = cursor.fetchone()
         connect.close()
         try:
-            return variants[0]
+            return variants[0].split()
         except TypeError:
             return None
 

@@ -1,6 +1,6 @@
-start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "v"}
+start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "/v"}
 guess_word_keyboard = {"Verbs": "/g", "Nouns": "/s", "Numbers": "/c", "Adjectives": "/p", "Pronouns, prepositions, conjunction": "/m","Menu Button":"menu_button"}
-menu_keyboard = {"/menu": "to start the bot", "/help": "to see some information about the bot", "/translation": "to switch current translation "}
+menu_keyboard = { "/help": "to see some information about the bot", "/translation": "to switch current translation "}
 default_menu="Menu Button"
 help_message = r"""**_Guess Word game_**
 

@@ -73,9 +73,25 @@ class Games():
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
         question,answer,variants = Games.getting_constcuctor_games( user_param=user_param)
-        print(question)
         database.updating_answer(user_id, answer=answer )
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
         database.updating_question(user_id=user_id, question=question)
         return variants, question
+
+    def word_constructor(self, user_id: int) -> list | str:
+        user_param=random.choice(["g", "c", "s", "p"])
+        database = EnglishBotDatabase(user_id)
+        database.updating_user_game(user_id, game="word_constructor")
+        question, answer, variants = Games.getting_data_guessing_game(user_param=user_param, translation="turk")
+        variants=answer
+        if " " in variants:
+            variants=variants.replace(" ","_")
+            variants=random.sample(variants,len(variants))
+        else:
+            variants=random.sample(variants,len(variants))
+        database.updating_answer(answer=answer, user_id=user_id)
+        database.updating_variants_for_user(user_id=user_id, variants=variants)
+        database.updating_user_variants(user_id, variants)
+        database.updating_question(user_id=user_id, question=question)
+        return question, variants
