@@ -209,7 +209,7 @@ class EnglishBotDatabase():
         connect.close()
 
     @staticmethod
-    def checking_user_answer(user_id: int, database_name: str = database_name) -> str | None:
+    def checking_user_answer(user_id: int, database_name: str = database_name) -> str :
         """the function checks user answers and returns a str"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()

@@ -1,7 +1,7 @@
 import aiogram.exceptions
 from aiogram import Router
 from english_bot.keyboards.keyboards import create_inline_kb
-from english_bot.lexicon.lexicon import start_keyboard, guess_word_keyboard,default_menu
+from english_bot.lexicon.lexicon import start_keyboard, guess_word_keyboard,default_menu, chuck_keyboard
 from aiogram.types import CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
 from english_bot.games.games import Games
@@ -31,7 +31,11 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
     if callback.data == "guess_word":
         keyboard = create_inline_kb(2,last_btn=default_menu,**guess_word_keyboard)
         await callback.message.edit_text(text="Choose parts of speech",reply_markup=keyboard)
-        await callback.answer()
+
+    if callback.data == "/chuck":
+        joke=game.getting_jokes()
+        keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
+        await callback.message.edit_text(text=joke, reply_markup=keyboard)
 
     if callback.data=="/g" :
         user_param = "g" # verbs

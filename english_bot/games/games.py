@@ -1,5 +1,7 @@
 import requests
 import random
+
+import english_bot.api.urls
 from english_bot.api.headers import GuessingGameHeaders
 from english_bot.api.urls import GuessingGameUrls
 from english_bot.config import datebase_name
@@ -95,3 +97,8 @@ class Games():
         database.updating_user_variants(user_id, variants)
         database.updating_question(user_id=user_id, question=question)
         return question, variants
+
+    def getting_jokes(self):
+        joke = requests.get(english_bot.api.urls.chuck_url).json()
+        joke = joke["joke"]
+        return joke
