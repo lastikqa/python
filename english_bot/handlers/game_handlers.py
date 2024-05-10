@@ -33,9 +33,14 @@ async def process_guess_word_keyboard(callback: CallbackQuery):
         await callback.message.edit_text(text="Choose parts of speech",reply_markup=keyboard)
 
     if callback.data == "/chuck":
-        joke=game.getting_jokes()
+        joke=game.getting_jokes(user_id)
         keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
         await callback.message.edit_text(text=joke, reply_markup=keyboard)
+
+    if callback.data == "/translation":
+        translation = game.getting_joke_translation(user_id)
+        keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
+        await callback.message.edit_text(text=f"{user_question}\n \n{translation}", reply_markup=keyboard)
 
     if callback.data=="/g" :
         user_param = "g" # verbs

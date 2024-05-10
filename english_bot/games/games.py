@@ -1,6 +1,6 @@
 import requests
 import random
-
+import translators as ts
 import english_bot.api.urls
 from english_bot.api.headers import GuessingGameHeaders
 from english_bot.api.urls import GuessingGameUrls
@@ -98,7 +98,14 @@ class Games():
         database.updating_question(user_id=user_id, question=question)
         return question, variants
 
-    def getting_jokes(self):
+    def getting_jokes(self, user_id):
+        database=EnglishBotDatabase(user_id)
         joke = requests.get(english_bot.api.urls.chuck_url).json()
         joke = joke["joke"]
+        database.updating_question(user_id=user_id,question=joke)
         return joke
+    def getting_joke_translation(self,user_id):
+        database=EnglishBotDatabase(user_id)
+        question=database.checking_question(user_id)
+        translation = ts.translate_text(question, to_language='ru')
+        return translation
