@@ -30,7 +30,7 @@ class Games:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
-        response = requests.get(GuessingGameUrls.url, header=headers, params=params).json()
+        response = requests.get(GuessingGameUrls.url, headers=headers, params=params).json()
         question = response["question"]
         answer = response["answer"]
         variants = list(response["variants"])
