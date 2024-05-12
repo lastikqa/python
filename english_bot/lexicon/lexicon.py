@@ -1,8 +1,8 @@
 start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "/v","Chuck Norris":"/chuck"}
 guess_word_keyboard = {"Verbs": "/g", "Nouns": "/s", "Numbers": "/c", "Adjectives": "/p", "Pronouns, prepositions, conjunction": "/m"}
-menu_keyboard = { "/help": "to see some information about the bot", "/translation": "to switch current translation "}
+menu_keyboard = {"/help": "to see some information about the bot", "/translation": "to switch current translation "}
 default_menu="Menu Button"
-chuck_keyboard= {"Next":"/chuck","Translate":"/translation"}
+chuck_keyboard= {"Next": "/chuck", "Translate": "/translation"}
 help_message = r"""**_Guess Word game_**
 
 You need to choose rights translation for words

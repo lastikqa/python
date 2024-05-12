@@ -4,7 +4,8 @@ from english_bot.config import datebase_name
 
 database_name = datebase_name
 
-class EnglishBotDatabase():
+
+class EnglishBotDatabase:
     def __init__(self, user_id):
         self.user_id = user_id
 
@@ -24,7 +25,7 @@ class EnglishBotDatabase():
                     variants TEXT,
                     user_variants TEXT,
                     user_score INTEGER,
-                    counter_user_score INTEGER
+                    counter_user_score INTEGER,
 
                     )
                 """)
@@ -32,17 +33,21 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def creating_object_user_in_db(self, user_id: int, first_name: str, database_name: str = database_name):
+    @staticmethod
+    def creating_object_user_in_db(user_id: int, first_name: str, database_name: str = database_name):
         """Create a new object in db. the function gets user id from telegram and username"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
-        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, question,answer, user_answer, variants, user_variants, user_score, counter_user_score ) '
+        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, '
+                       'question,answer, user_answer, variants, user_variants, '
+                       'user_score, counter_user_score) '
                        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                       (user_id, first_name, "rus", "", "", "", "", "","", 0, 0))
+                       (user_id, first_name, "rus", "", "", "", "", "", "", 0, 0))
         connect.commit()
         connect.close()
 
-    def looking_for_user_in_db(self,user_id: int, database_name: str = database_name) -> bool:
+    @staticmethod
+    def looking_for_user_in_db(user_id: int, database_name: str = database_name) -> bool:
         """This function gets user id from telegram and returns True if the one in database
         and False if the one does not exist in database"""
         connect = sqlite3.connect(database_name)
@@ -55,10 +60,10 @@ class EnglishBotDatabase():
         else:
             return False
 
-
-    def checking_user_game(self, user_id: int, database_name: str = database_name)->str | None:
+    @staticmethod
+    def checking_user_game(user_id: int, database_name: str = database_name) -> str | None:
         """the function cheks game which user is playing and returns the name of the game"""
-        connect=sqlite3.connect(database_name)
+        connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT game FROM Users WHERE user_id=?', (user_id,))
         game = cursor.fetchone()
@@ -68,7 +73,8 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_answer(self, user_id: int ,answer: str, database_name: str = database_name):
+    @staticmethod
+    def updating_answer(user_id: int, answer: str, database_name: str = database_name):
         """the function updated  answer for the game"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -76,14 +82,17 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def updating_question(self,question:str,user_id: int, database_name:str = database_name):
+    @staticmethod
+    def updating_question(question: str, user_id: int, database_name: str = database_name):
         """the function updated question for tge game"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET question = ? WHERE user_id = ?', (question, user_id))
         connect.commit()
         connect.close()
-    def checking_question(self,user_id: int, database_name: str = database_name)->str:
+
+    @staticmethod
+    def checking_question(user_id: int, database_name: str = database_name) -> str:
         """the function cheks question for user"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -93,9 +102,10 @@ class EnglishBotDatabase():
         try:
             return queistion[0]
         except TypeError:
-            return None
+            return ""
 
-    def updating_user_game(self,user_id: int , database_name: str = database_name,game: str = None):
+    @staticmethod
+    def updating_user_game(user_id: int, database_name: str = database_name, game: str = None):
         """the function updayes user game"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -103,19 +113,21 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def updating_user_translation(self, translation: str, user_id: int, database_name: str = database_name):
+    @staticmethod
+    def updating_user_translation(translation: str, user_id: int, database_name: str = database_name):
         """the function updates user translation"""
-        if translation=="rus":
-            translation="turk"
-        elif translation=="turk":
-            translation="rus"
+        if translation == "rus":
+            translation = "turk"
+        elif translation == "turk":
+            translation = "rus"
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET translation = ? WHERE user_id = ?', (translation, user_id))
         connect.commit()
         connect.close()
 
-    def checking_user_translation(self, user_id: int, database_name: str = database_name):
+    @staticmethod
+    def checking_user_translation(user_id: int, database_name: str = database_name):
         """the function checks user translation"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -126,7 +138,9 @@ class EnglishBotDatabase():
             return translation[0]
         except TypeError:
             return None
-    def checking_variants_for_user(self,user_id:int, database_name: str = database_name):
+
+    @staticmethod
+    def checking_variants_for_user(user_id: int, database_name: str = database_name):
         """the function checks user variants"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -138,7 +152,8 @@ class EnglishBotDatabase():
         except TypeError:
             return None
 
-    def updating_variants_for_user(self,user_id:int,variants: list, database_name: str = database_name):
+    @staticmethod
+    def updating_variants_for_user(user_id: int, variants: list, database_name: str = database_name):
         """the function updayes user game"""
         variants = " ".join(variants)
         connect = sqlite3.connect(database_name)
@@ -147,9 +162,10 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def checking_answer(self, user_id: int, database_name: str = database_name)->str:
+    @staticmethod
+    def checking_answer(user_id: int, database_name: str = database_name) -> str:
         """the function cheks game which user is playing and returns the name of the game"""
-        connect=sqlite3.connect(database_name)
+        connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT answer FROM Users WHERE user_id=?', (user_id,))
         answer = cursor.fetchone()
@@ -157,9 +173,10 @@ class EnglishBotDatabase():
         try:
             return answer[0]
         except TypeError:
-            return None
+            return ""
 
-    def updating_user_variants(self, user_id: int, var: list | None = None, database_name: str = database_name):
+    @staticmethod
+    def updating_user_variants(user_id: int, var: list | None = None, database_name: str = database_name):
         """the function """
         var = " ".join(var)
         connect = sqlite3.connect(database_name)
@@ -168,19 +185,18 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def checking_user_score(self,  user_id: int, database_name: str = database_name)->int:
+    @staticmethod
+    def checking_user_score(user_id: int, database_name: str = database_name) -> int:
         """the function check user score"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT user_score FROM Users WHERE user_id=?', (user_id,))
         user_score = cursor.fetchone()
         connect.close()
-        try:
-            return int(user_score[0])
-        except TypeError:
-            return None
+        return int(user_score[0])
 
-    def updating_score_count(self, user_id: int,win: int = 0,  database_name: str = database_name):
+    @staticmethod
+    def updating_score_count(user_id: int, win: int = 0, database_name: str = database_name):
         """the function updates counter of user wins if win +=1, else win =0"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -188,19 +204,18 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def checking_counter_user_score(self,  user_id: int, database_name: str = database_name)->int:
+    @staticmethod
+    def checking_counter_user_score(user_id: int, database_name: str = database_name) -> int:
         """the function check user score"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT counter_user_score FROM Users WHERE user_id=?', (user_id,))
         counter_user_score = cursor.fetchone()
         connect.close()
-        try:
-            return int(counter_user_score[0])
-        except TypeError:
-            return None
+        return int(counter_user_score[0])
 
-    def updating_user_score(self, user_id: int, counter: int , database_name: str = database_name):
+    @staticmethod
+    def updating_user_score(user_id: int, counter: int, database_name: str = database_name):
         """the function updates user_score in database"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -209,7 +224,7 @@ class EnglishBotDatabase():
         connect.close()
 
     @staticmethod
-    def checking_user_answer(user_id: int, database_name: str = database_name) -> str :
+    def checking_user_answer(user_id: int, database_name: str = database_name) -> str:
         """the function checks user answers and returns a str"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -222,7 +237,8 @@ class EnglishBotDatabase():
         else:
             return user_answer[0]
 
-    def updating_user_answer(self, user_id: int,user_answer: str | None=None, database_name : str = database_name):
+    @staticmethod
+    def updating_user_answer(user_id: int, user_answer: str | None = None, database_name: str = database_name):
         """the functions updates variant of user answer"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -230,19 +246,17 @@ class EnglishBotDatabase():
         connect.commit()
         connect.close()
 
-    def checking_user_variants(self,user_id: int, database_name: str=database_name)-> list:
+    @staticmethod
+    def checking_user_variants(user_id: int, database_name: str = database_name) -> list:
         """the function checks available variants for user and returns list of that """
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT user_variants FROM Users WHERE user_id=?', (user_id,))
         user_variants = cursor.fetchone()
         connect.close()
-        try:
-            if " " in user_variants[0]:
-                user_variants = user_variants[0].split()
-                return user_variants
-            else:
-                user_variants = list(user_variants)
-                return user_variants
-        except TypeError:
-            return None
+        if " " in user_variants[0]:
+            user_variants = user_variants[0].split()
+            return user_variants
+        else:
+            user_variants = list(user_variants)
+            return user_variants
