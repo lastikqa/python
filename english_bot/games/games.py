@@ -7,6 +7,7 @@ import english_bot.api.urls
 from english_bot.api.headers import GuessingGameHeaders
 from english_bot.api.urls import GuessingGameUrls
 from english_bot.config import datebase_name
+from english_bot.data import abnormal_verbs, phrasal_verbs
 database_name = datebase_name
 
 
@@ -15,18 +16,19 @@ class Games:
         self.user_id = user_id
         self.user_param = user_param
 
-    @staticmethod
-    def gusesing_game(user_id, user_param):
+    def gusesing_game(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id=user_id, game=user_param)
         translation = database.checking_user_translation(user_id=user_id)
-        question, answer, variants = Games.getting_data_guessing_game(translation=translation, user_param=user_param)
+        question, answer, variants = self.getting_data_guessing_game(translation=translation, user_param=user_param)
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
         database.updating_question(user_id=user_id, question=question)
         return question, variants
 
-    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameHeaders.headers, params: str = GuessingGameHeaders.params_game, translation: str = "rus") -> tuple:
+    @staticmethod
+    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameHeaders.headers,
+                                   params: str = GuessingGameHeaders.params_game, translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
@@ -36,21 +38,24 @@ class Games:
         variants = list(response["variants"])
         return question, answer, variants
 
-    def getting_constcuctor_games(translation: str = "rus", user_param: str = "v",  params: str = GuessingGameHeaders.params_game,
+    def getting_constcuctor_games(self, translation: str = "rus", user_param: str = "v",
+                                  params: str = GuessingGameHeaders.params_game,
                                   headers: str = GuessingGameHeaders.headers):
 
         params["slovar"] = user_param
         params["first"] = translation
         try:
-            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies, headers=headers).json()
+            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies,
+                                    headers=headers).json()
         except requests.exceptions.JSONDecodeError:
             response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies,
                                     headers=headers).json()
         question = response["answer"]
         answer = response["question"]
-        variants = Games.random_constructor_variants(answer=answer)
+        variants = self.random_constructor_variants(answer=answer)
         return question, answer, variants
 
+    @staticmethod
     def random_constructor_variants(answer: str) -> list:
         """the function gets strings and splits them into lists
         and return the lists with random words of letters of the string"""
@@ -67,10 +72,10 @@ class Games:
         return variants
 
     @staticmethod
-    def constructor_games(user_id, user_param):
+    def constructor_games(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
-        question, answer, variants = Games.getting_constcuctor_games(user_param=user_param)
+        question, answer, variants = self.getting_constcuctor_games(user_param=user_param)
         database.updating_answer(user_id, answer=answer)
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
@@ -78,11 +83,11 @@ class Games:
         return variants, question
 
     @staticmethod
-    def word_constructor(user_id: int) -> tuple | str:
+    def word_constructor(self, user_id: int) -> tuple | str:
         user_param = random.choice(["g", "c", "s", "p"])
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game="word_constructor")
-        question, answer, variants = Games.getting_data_guessing_game(user_param=user_param, translation="turk")
+        question, answer, variants = self.getting_data_guessing_game(user_param=user_param, translation="turk")
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")

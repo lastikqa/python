@@ -42,7 +42,7 @@ async def process_main_functions(callback: CallbackQuery):
 
     if callback.data == "/g":
         user_param = "g"  # verbs
-        question, variants = game.gusesing_game(user_id, user_param)
+        question, variants = game.gusesing_game(user_id,user_param)
         keyboard = create_inline_kb(2, default_menu, *variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
