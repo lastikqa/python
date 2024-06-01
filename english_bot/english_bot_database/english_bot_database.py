@@ -9,6 +9,7 @@ class EnglishBotDatabase:
     def __init__(self, user_id):
         self.user_id = user_id
 
+    @staticmethod
     def creating_users_db(database_name: str = database_name):
         """the function just creates sqllite datebase to save users information"""
         connect = sqlite3.connect(database_name)
@@ -115,7 +116,10 @@ class EnglishBotDatabase:
 
     @staticmethod
     def updating_user_translation(translation: str, user_id: int, database_name: str = database_name):
-        """the function updates user translation"""
+        """the function updates user translation
+        rus means english to russian. turk means russian to english.
+        do not blame me it is the api  I just use that"""
+
         if translation == "rus":
             translation = "turk"
         elif translation == "turk":
@@ -260,3 +264,16 @@ class EnglishBotDatabase:
         else:
             user_variants = list(user_variants)
             return user_variants
+
+    @staticmethod
+    def updating_user_rating(user_id: int, win: bool = True):
+        """the fynction updates user rating"""
+        if win is True:
+            win = EnglishBotDatabase.checking_counter_user_score(user_id=user_id) + 1
+            EnglishBotDatabase.updating_score_count(user_id=user_id, win=win)
+        else:
+            user_score = EnglishBotDatabase.checking_user_score(user_id=user_id)
+            counter_user_score = EnglishBotDatabase.checking_counter_user_score(user_id=user_id)
+            if counter_user_score > user_score:
+                EnglishBotDatabase.updating_user_score(user_id=user_id, counter=counter_user_score)
+            EnglishBotDatabase.updating_score_count(user_id=user_id)

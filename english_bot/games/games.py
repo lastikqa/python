@@ -26,8 +26,7 @@ class Games:
         database.updating_question(user_id=user_id, question=question)
         return question, variants
 
-    @staticmethod
-    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameHeaders.headers,
+    def getting_data_guessing_game(self,user_param: str, headers: str = GuessingGameHeaders.headers,
                                    params: str = GuessingGameHeaders.params_game, translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
@@ -55,8 +54,8 @@ class Games:
         variants = self.random_constructor_variants(answer=answer)
         return question, answer, variants
 
-    @staticmethod
-    def random_constructor_variants(answer: str) -> list:
+
+    def random_constructor_variants(self,answer: str) -> list:
         """the function gets strings and splits them into lists
         and return the lists with random words of letters of the string"""
 
@@ -71,7 +70,7 @@ class Games:
                 variants.append(item)
         return variants
 
-    @staticmethod
+
     def constructor_games(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
@@ -82,7 +81,7 @@ class Games:
         database.updating_question(user_id=user_id, question=question)
         return variants, question
 
-    @staticmethod
+
     def word_constructor(self, user_id: int) -> tuple | str:
         user_param = random.choice(["g", "c", "s", "p"])
         database = EnglishBotDatabase(user_id)
@@ -122,5 +121,5 @@ class Games:
         print(question)
         audio = gTTS(text=question, lang="en", slow=False)
         audio.save("audio.mp3")
-        audio = "audio.mp3"
+        audio = f"{user_id}.mp3"
         return audio
