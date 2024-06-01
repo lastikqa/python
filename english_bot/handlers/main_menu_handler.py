@@ -5,11 +5,12 @@ from aiogram.types import CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
 from english_bot.games.games import Games
 from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
+from english_bot.filters.main_menu_filters import main_menu_filter
 
 router = Router()
 
 
-@router.callback_query()
+@router.callback_query(main_menu_filter)
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
     database = EnglishBotDatabase(user_id=callback.from_user.id)
@@ -38,10 +39,10 @@ async def process_main_menu(callback: CallbackQuery):
 
     if callback.data == "/v":
         user_param = "v"
-    database.updating_user_answer(user_id)
-    variants, question = gamer.constructor_games(user_id=user_id, user_param=user_param)
-    keyboard = create_inline_kb(2, default_menu, *variants)
-    await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+        database.updating_user_answer(user_id)
+        variants, question = gamer.constructor_games(user_id=user_id, user_param=user_param)
+        keyboard = create_inline_kb(2, default_menu, *variants)
+        await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
 
     if callback.data == "/chuck":
         joke = gamer.getting_jokes(user_id)

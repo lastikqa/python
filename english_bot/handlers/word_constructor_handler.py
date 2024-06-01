@@ -19,7 +19,7 @@ async def processing_word_constructors(callback: CallbackQuery):
     user_variants = database.checking_user_variants(user_id)
     variants = database.checking_variants_for_user(user_id)
     game_status = database.checking_user_game(user_id)
-
+    print(game_status)
 
     if game_status == "word_constructor" and callback.data in user_variants:
         try:
@@ -41,7 +41,7 @@ async def processing_word_constructors(callback: CallbackQuery):
                 database.updating_user_answer(user_id)
                 database.updating_user_rating(user_id)
                 question, variants = gamer.word_constructor(user_id)
-                keyboard = create_inline_kb(2, default_menu, *variants)
+                keyboard = create_inline_kb(3, default_menu, *variants)
                 await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
             else:
                 database.updating_user_answer(user_id)
@@ -50,4 +50,4 @@ async def processing_word_constructors(callback: CallbackQuery):
                 keyboard = create_inline_kb(3, default_menu, *variants)
                 await callback.message.edit_text(text=f"'{user_question}'", reply_markup=keyboard)
 
-    await callback.answer()
+    #await callback.answer()
