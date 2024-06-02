@@ -1,5 +1,5 @@
 from aiogram.types import CallbackQuery
-from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
+from english_bot_database.english_bot_database import EnglishBotDatabase
 
 
 def guess_word_filter(callback: CallbackQuery) -> bool:

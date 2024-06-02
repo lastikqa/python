@@ -1,5 +1,5 @@
 import sqlite3
-from english_bot.config import datebase_name
+from config import datebase_name
 
 
 class EnglishBotDatabase:

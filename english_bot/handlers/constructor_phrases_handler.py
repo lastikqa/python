@@ -1,11 +1,11 @@
 from aiogram import Router
-from english_bot.keyboards.keyboards import create_inline_kb
-from english_bot.lexicon.lexicon import default_menu
+from keyboards.keyboards import create_inline_kb
+from lexicon.lexicon import default_menu
 from aiogram.types import CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
-from english_bot.games.games import Games
-from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
-from english_bot.filters.constructor_phrases_filter import constructor_phrases_filter
+from games.games import Games
+from english_bot_database.english_bot_database import EnglishBotDatabase
+from filters.constructor_phrases_filter import constructor_phrases_filter
 router = Router()
 
 

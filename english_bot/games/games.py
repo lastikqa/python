@@ -1,14 +1,14 @@
-from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
+from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 import random
 from gtts import gTTS
 import translators as ts
-import english_bot.api.urls
-from english_bot.api.headers import GuessingGameHeaders
-from english_bot.api.urls import GuessingGameUrls
-from english_bot.config import datebase_name
-from english_bot.data.abnormal_verbs import abnormal_verbs
-from english_bot.data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
+import api.urls
+from api.headers import GuessingGameHeaders
+from api.urls import GuessingGameUrls
+from config import datebase_name
+from data.abnormal_verbs import abnormal_verbs
+from data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
 database_name = datebase_name
 
 
@@ -103,7 +103,7 @@ class Games:
     @staticmethod
     def getting_jokes(user_id):
         database = EnglishBotDatabase(user_id)
-        joke = requests.get(english_bot.api.urls.chuck_url).json()
+        joke = requests.get(api.urls.chuck_url).json()
         joke = joke["joke"]
         database.updating_answer(user_id=user_id, answer=joke)
         return joke

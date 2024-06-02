@@ -1,6 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from english_bot.keyboards.keyboards import set_main_menu
+from keyboards.keyboards import set_main_menu
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import main_menu_handler, word_constructor_handler

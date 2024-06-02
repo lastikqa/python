@@ -1,10 +1,10 @@
 from aiogram import Router
-from english_bot.keyboards.keyboards import create_inline_kb
-from english_bot.lexicon.lexicon import default_menu, abnormal_verbs_keyboard
+from keyboards.keyboards import create_inline_kb
+from lexicon.lexicon import default_menu, abnormal_verbs_keyboard
 from aiogram.types import CallbackQuery
-from english_bot.games.games import Games
-from english_bot.english_bot_database.english_bot_database import EnglishBotDatabase
-from english_bot.filters.abnormal_verbs_filter import abnormal_verbs_filter
+from games.games import Games
+from english_bot_database.english_bot_database import EnglishBotDatabase
+from filters.abnormal_verbs_filter import abnormal_verbs_filter
 
 router = Router()
 
