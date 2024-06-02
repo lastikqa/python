@@ -27,8 +27,8 @@ async def process_start_command(message: Message):
 
 
 @router.message()
-async def menu_buttons(message: Message):
-    """the function processes menu buttons"""
+async def menu_button(message: Message):
+    """the function processes menu button"""
     mesaage_id = message.message_id
     chat_id = message.chat.id
     if message.text == "/help":

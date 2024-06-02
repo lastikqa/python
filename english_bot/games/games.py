@@ -7,7 +7,8 @@ import english_bot.api.urls
 from english_bot.api.headers import GuessingGameHeaders
 from english_bot.api.urls import GuessingGameUrls
 from english_bot.config import datebase_name
-from english_bot.data import abnormal_verbs, phrasal_verbs
+from english_bot.data.abnormal_verbs import abnormal_verbs
+from english_bot.data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
 database_name = datebase_name
 
 
@@ -26,8 +27,10 @@ class Games:
         database.updating_question(user_id=user_id, question=question)
         return question, variants
 
-    def getting_data_guessing_game(self,user_param: str, headers: str = GuessingGameHeaders.headers,
-                                   params: str = GuessingGameHeaders.params_game, translation: str = "rus") -> tuple:
+    @staticmethod
+    def getting_data_guessing_game( user_param: str, headers: str = GuessingGameHeaders.headers,
+                                   params: str = GuessingGameHeaders.params_game,
+                                    translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
@@ -54,8 +57,8 @@ class Games:
         variants = self.random_constructor_variants(answer=answer)
         return question, answer, variants
 
-
-    def random_constructor_variants(self,answer: str) -> list:
+    @staticmethod
+    def random_constructor_variants(answer: str) -> list:
         """the function gets strings and splits them into lists
         and return the lists with random words of letters of the string"""
 
@@ -70,7 +73,6 @@ class Games:
                 variants.append(item)
         return variants
 
-
     def constructor_games(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
@@ -80,7 +82,6 @@ class Games:
         database.updating_user_variants(user_id, variants)
         database.updating_question(user_id=user_id, question=question)
         return variants, question
-
 
     def word_constructor(self, user_id: int) -> tuple | str:
         user_param = random.choice(["g", "c", "s", "p"])
@@ -104,22 +105,32 @@ class Games:
         database = EnglishBotDatabase(user_id)
         joke = requests.get(english_bot.api.urls.chuck_url).json()
         joke = joke["joke"]
-        database.updating_question(user_id=user_id, question=joke)
+        database.updating_answer(user_id=user_id, answer=joke)
         return joke
 
     @staticmethod
-    def getting_joke_translation(user_id):
+    def getting_translation(user_id: int) -> str:
         database = EnglishBotDatabase(user_id)
-        question = database.checking_question(user_id)
-        translation = ts.translate_text(question, to_language='ru')
+        answer = database.checking_answer(user_id)
+        translation = ts.translate_text(answer, to_language='ru')
         return translation
 
-    @staticmethod
-    def getting_audio(user_id):
+
+    def getting_audio(self,user_id)-> bytes:
         database = EnglishBotDatabase(user_id)
-        question = database.checking_question(user_id)
-        print(question)
-        audio = gTTS(text=question, lang="en", slow=False)
-        audio.save("audio.mp3")
+        answer = database.checking_answer(user_id)
+        audio = gTTS(text=answer, lang="en", slow=False)
+        audio.save(f"{user_id}.mp3")
         audio = f"{user_id}.mp3"
         return audio
+
+    def getting_abnormal_verbs(self, verbs: dict = abnormal_verbs) -> tuple:
+        """I made a list with keys of abnormal verbs dict and get random item of my list as a key to the dict """
+        random_verb = verbs[random.choice(abnormal_verbs_list_keys)]
+        first_form = random_verb[0]
+        second_form = random_verb[1]
+        third_form = random_verb[2]
+        translation = random_verb[3]
+        return first_form, second_form, third_form, translation
+
+

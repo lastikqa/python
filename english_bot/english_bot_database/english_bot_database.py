@@ -26,8 +26,7 @@ class EnglishBotDatabase:
                     variants TEXT,
                     user_variants TEXT,
                     user_score INTEGER,
-                    counter_user_score INTEGER
-
+                    counter_user_score INTEGER,
                     )
                 """)
 

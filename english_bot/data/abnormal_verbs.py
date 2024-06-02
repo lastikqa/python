@@ -169,7 +169,7 @@ abnormal_verbs = {"abide": ['abide', 'abided, abode', 'abided, abode', 'терп
 "thrust": ['thrust', 'thrust', 'thrust', 'толкать, вонзать'],
 "tread": ['tread', 'trod', 'trodden, trod', 'ступать, топтать'],
 "undergo": ['undergo', 'underwent', 'undergone', 'переносить, подвергаться'],
-"understand   ": ['understand\xa0\xa0\xa0', 'understood', 'understood', 'понимать'],
+"understand": ['understand', 'understood', 'understood', 'понимать'],
 "undertake": ['undertake', 'undertook', 'undertaken', 'предпринимать'],
 "uphold": ['uphold', 'upheld', 'upheld', 'поддерживать'],
 "upset": ['upset', 'upset', 'upset', 'расстраивать'],
