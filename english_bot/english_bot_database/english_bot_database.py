@@ -6,7 +6,7 @@ class EnglishBotDatabase:
     def __init__(self, user_id):
         self.user_id = user_id
 
-    database_name = datebase_name
+    database_name = "english_bot_database"
 
     @staticmethod
     def creating_users_db(database_name: str = database_name):
