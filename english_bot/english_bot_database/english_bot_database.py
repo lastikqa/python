@@ -2,16 +2,15 @@ import sqlite3
 from english_bot.config import datebase_name
 
 
-database_name = datebase_name
-
-
 class EnglishBotDatabase:
     def __init__(self, user_id):
         self.user_id = user_id
 
+    database_name = datebase_name
+
     @staticmethod
     def creating_users_db(database_name: str = database_name):
-        """the function just creates sqllite datebase to save users information"""
+        """the function just creates sqllite datebase to save some information about users """
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute("""CREATE TABLE IF NOT EXISTS Users
@@ -26,7 +25,7 @@ class EnglishBotDatabase:
                     variants TEXT,
                     user_variants TEXT,
                     user_score INTEGER,
-                    counter_user_score INTEGER,
+                    counter_user_score INTEGER
                     )
                 """)
 

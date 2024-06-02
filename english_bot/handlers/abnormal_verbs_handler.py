@@ -18,7 +18,8 @@ async def process_abnormal_verbs(callback: CallbackQuery):
 
     if callback.data == "abnormal_verbs":
         verb1, verb2, verb3, translation = gamer.getting_abnormal_verbs()
-        text = (f"\\    ***{translation.title()}*** \n\n\\* ***Base Form***   {verb1} \n\n\\* ***Past Form***   {verb2} \n\n"
+        text = (f"\\    ***{translation.title()}*** \n\n\\* ***Base Form***   {verb1} "
+                f"\n\n\\* ***Past Form***   {verb2} \n\n"
                 f"\\* ***Participle***   {verb3}  ")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
         await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)

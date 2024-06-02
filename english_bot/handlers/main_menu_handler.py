@@ -18,7 +18,7 @@ async def process_main_menu(callback: CallbackQuery):
     user_question = database.checking_question(user_id)
     if callback.data == "menu_button":
         keyboard = create_inline_kb(1, **start_keyboard)
-        await callback.message.edit_text(text="Hello. Choose something to play", reply_markup=keyboard)
+        await callback.message.edit_text(text="Hello. Choose something", reply_markup=keyboard)
 
     if callback.data == "guess_word":
         keyboard = create_inline_kb(2, last_btn=default_menu, **guess_word_keyboard)

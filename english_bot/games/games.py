@@ -28,7 +28,7 @@ class Games:
         return question, variants
 
     @staticmethod
-    def getting_data_guessing_game( user_param: str, headers: str = GuessingGameHeaders.headers,
+    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameHeaders.headers,
                                    params: str = GuessingGameHeaders.params_game,
                                     translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
@@ -115,16 +115,13 @@ class Games:
         translation = ts.translate_text(answer, to_language='ru')
         return translation
 
-
-    def getting_audio(self,user_id)-> bytes:
-        database = EnglishBotDatabase(user_id)
-        answer = database.checking_answer(user_id)
-        audio = gTTS(text=answer, lang="en", slow=False)
+    def getting_audio(self,user_id, text : str)-> bytes:
+        audio = gTTS(text=text, lang="en", slow=False)
         audio.save(f"{user_id}.mp3")
-        audio = f"{user_id}.mp3"
-        return audio
-
-    def getting_abnormal_verbs(self, verbs: dict = abnormal_verbs) -> tuple:
+        name_audio = f"{user_id}.mp3"
+        return name_audio
+    @staticmethod
+    def getting_abnormal_verbs( verbs: dict = abnormal_verbs) -> tuple:
         """I made a list with keys of abnormal verbs dict and get random item of my list as a key to the dict """
         random_verb = verbs[random.choice(abnormal_verbs_list_keys)]
         first_form = random_verb[0]
@@ -132,5 +129,3 @@ class Games:
         third_form = random_verb[2]
         translation = random_verb[3]
         return first_form, second_form, third_form, translation
-
-
