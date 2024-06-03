@@ -22,13 +22,13 @@ pprint.pprint(word_soups)
 counter = 0
 
 with open("phrasal_verbs.py", "w", encoding='utf-8') as file:
-    file.write("phrasall_verbs = {")
-    for i in range( len(word_soups)-1):
+    file.write("phrasal_verbs = {")
+    for i in range(len(word_soups)-1):
         counter += 1
         if counter == len(word_soups):
-            file.write(f'"{word_soups[i][0]}": {word_soups[i][1:-1]}')
+            file.write(f'"{word_soups[i][0]}": [{word_soups[i][1:-1]}]')
             file.write("}")
         else:
             file.write(f'"{word_soups[i][0]}": {word_soups[i][1:-1]},\n')
-    file.write(f'"{word_soups[counter][0]}": {word_soups[counter][1:-1]}')
+    file.write(f'"{word_soups[counter][0]}": [{word_soups[counter][1:-1]}]')
     file.write("}")

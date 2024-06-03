@@ -7,8 +7,7 @@ import api.urls
 from api.headers import GuessingGameHeaders
 from api.urls import GuessingGameUrls
 from config import datebase_name
-from data.abnormal_verbs import abnormal_verbs
-from data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
+
 database_name = datebase_name
 
 
@@ -121,11 +120,9 @@ class Games:
         name_audio = f"{user_id}.mp3"
         return name_audio
     @staticmethod
-    def getting_abnormal_verbs( verbs: dict = abnormal_verbs) -> tuple:
+    def getting_dictionaries_data(dictionary: dict , key_list : list) -> tuple:
         """I made a list with keys of abnormal verbs dict and get random item of my list as a key to the dict """
-        random_verb = verbs[random.choice(abnormal_verbs_list_keys)]
-        first_form = random_verb[0]
-        second_form = random_verb[1]
-        third_form = random_verb[2]
-        translation = random_verb[3]
-        return first_form, second_form, third_form, translation
+        key = random.choice(key_list)
+        random_dictionary_values = dictionary[key]
+
+        return key, random_dictionary_values

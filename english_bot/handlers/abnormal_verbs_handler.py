@@ -4,6 +4,8 @@ from lexicon.lexicon import default_menu, abnormal_verbs_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
+from data.abnormal_verbs import abnormal_verbs
+from data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
 from filters.abnormal_verbs_filter import abnormal_verbs_filter
 
 router = Router()
@@ -17,10 +19,10 @@ async def process_abnormal_verbs(callback: CallbackQuery):
     gamer = Games(user_id, user_param)
 
     if callback.data == "abnormal_verbs":
-        verb1, verb2, verb3, translation = gamer.getting_abnormal_verbs()
-        text = (f"\\    ***{translation.title()}*** \n\n\\* ***Base Form***   {verb1} "
-                f"\n\n\\* ***Past Form***   {verb2} \n\n"
-                f"\\* ***Participle***   {verb3}  ")
+        key, values = gamer.getting_dictionaries_data(dictionary=abnormal_verbs,key_list=abnormal_verbs_list_keys)
+        text = (f"\\    ***{values[3].title()}*** \n\n\\* ***Base Form***   {key} "
+                f"\n\n\\* ***Past Form***   {values[1]} \n\n"
+                f"\\* ***Participle***   {values[2]}  ")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
         await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
     await callback.answer()
