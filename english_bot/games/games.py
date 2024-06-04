@@ -1,12 +1,14 @@
 from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
+from bs4 import BeautifulSoup
 import random
 from gtts import gTTS
 import translators as ts
-import api.urls
-from api.headers import GuessingGameHeaders
-from api.urls import GuessingGameUrls
+import api.guessing_api
+from api.guessing_api import GuessingGameApi
 from config import datebase_name
+from api.context_english_api import ContextEnglishApi
+from api.random_chuck_jokes_api import RandomChuckJokesApi
 
 database_name = datebase_name
 
@@ -27,29 +29,29 @@ class Games:
         return question, variants
 
     @staticmethod
-    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameHeaders.headers,
-                                   params: str = GuessingGameHeaders.params_game,
+    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameApi.headers,
+                                   params: str = GuessingGameApi.params_game,
                                     translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
-        response = requests.get(GuessingGameUrls.url, headers=headers, params=params).json()
+        response = requests.get(GuessingGameApi.url, headers=headers, params=params).json()
         question = response["question"]
         answer = response["answer"]
         variants = list(response["variants"])
         return question, answer, variants
 
     def getting_constcuctor_games(self, translation: str = "rus", user_param: str = "v",
-                                  params: str = GuessingGameHeaders.params_game,
-                                  headers: str = GuessingGameHeaders.headers):
+                                  params: str = GuessingGameApi.params_game,
+                                  headers: str = GuessingGameApi.headers):
 
         params["slovar"] = user_param
         params["first"] = translation
         try:
-            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies,
+            response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
         except requests.exceptions.JSONDecodeError:
-            response = requests.get(GuessingGameUrls.url, params=params, cookies=GuessingGameHeaders.cookies,
+            response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
         question = response["answer"]
         answer = response["question"]
@@ -102,7 +104,7 @@ class Games:
     @staticmethod
     def getting_jokes(user_id):
         database = EnglishBotDatabase(user_id)
-        joke = requests.get(api.urls.chuck_url).json()
+        joke = requests.get(RandomChuckJokesApi.chuck_url).json()
         joke = joke["joke"]
         database.updating_answer(user_id=user_id, answer=joke)
         return joke
@@ -114,15 +116,36 @@ class Games:
         translation = ts.translate_text(answer, to_language='ru')
         return translation
 
-    def getting_audio(self,user_id, text : str)-> bytes:
+    def getting_audio(self, user_id, text: str) -> bytes:
         audio = gTTS(text=text, lang="en", slow=False)
         audio.save(f"{user_id}.mp3")
         name_audio = f"{user_id}.mp3"
         return name_audio
     @staticmethod
     def getting_dictionaries_data(dictionary: dict , key_list : list) -> tuple:
-        """I made a list with keys of abnormal verbs dict and get random item of my list as a key to the dict """
+        """I made a list with keys of my dictionaries  and get random item of my list as a key to the dicts """
         key = random.choice(key_list)
         random_dictionary_values = dictionary[key]
 
         return key, random_dictionary_values
+    def getting_context(self,word : str)-> tuple:
+        """english words should be seen in its contexts. the function gets a word and return a sentence with the word
+        and translation of the sentence into russian"""
+        find_word=list(word)
+        find_word=word[0]
+        word_url=word.replace(" ","+")
+        page = requests.get(url=ContextEnglishApi.context_english_url+word_url,
+                          headers=ContextEnglishApi.context_english_headers,
+                          cookies=ContextEnglishApi.context_english_cookies)
+        soup = BeautifulSoup(page.text, "html.parser")
+        sentences_soup = soup.findAll('span', class_="text")
+        sentences = []
+        for sentence in sentences_soup:
+            sentence = sentence.text
+            sentences.append(sentence.strip())
+        sentences = sentences[31::]
+        context = random.choice(sentences)
+        while find_word not in context:
+            context = random.choice(sentences)
+        translation = sentences[sentences.index(context) + 1]
+        return context, translation

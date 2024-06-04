@@ -21,10 +21,13 @@ async def process_phrasal_verbs(callback: CallbackQuery):
     if callback.data == "phrasal_verbs":
         key, values = gamer.getting_dictionaries_data(dictionary=phrasal_verbs,key_list=phrasal_verbs_key_list)
         must_be_escaped=[".","!","(",")","-"]
+        context, translation = gamer.getting_context(word=key)
         for item in must_be_escaped:
-            replase=fr"\{item}"
-            values[0]=values[0].replace(item,replase)
-        text = (f" ***{key}***  \n\n{values[0]}  ")
+            replace=fr"\{item}"
+            values[0]=values[0].replace(item,replace)
+            context=context.replace(item,replace)
+            translation=translation.replace(item,replace)
+        text = (f" ***{key}***  \n\n{values[0]} \n\n{context} \n\n{translation}")
         print(text)
         keyboard = create_inline_kb(2, last_btn=default_menu, **phrasal_verbs_keyboard)
         await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
