@@ -150,5 +150,5 @@ class Games:
         context = random.choice(sentences)
         while find_word not in context:
             context = random.choice(sentences)
-        translation = sentences[sentences.index(context) + 1]
+        translation = ts.translate_text(context, to_language='ru')
         return context, translation
