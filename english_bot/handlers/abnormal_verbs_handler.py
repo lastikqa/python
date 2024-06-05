@@ -20,9 +20,12 @@ async def process_abnormal_verbs(callback: CallbackQuery):
 
     if callback.data == "abnormal_verbs":
         key, values = gamer.getting_dictionaries_data(dictionary=abnormal_verbs, key_list=abnormal_verbs_list_keys)
+        sentences = gamer.getting_context(values[0])
+        sentences = replacer_escaped_symbols(list(sentences))
+
         text = (f"\\    ***{values[3].title()}*** \n\n\\* ***Base Form***   {key} "
                 f"\n\n\\* ***Past Form***   {values[1]} \n\n"
-                f"\\* ***Participle***   {values[2]}  ")
+                f"\\* ***Participle***   {values[2]} \n\n{sentences[0]} \n\n{sentences[1]}")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
         await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
     await callback.answer()

@@ -116,7 +116,7 @@ class Games:
         return translation
 
     @staticmethod
-    def getting_audio(self, user_id, text: str) -> str:
+    def getting_audio(user_id, text: str) -> str:
         audio = gTTS(text=text, lang="en", slow=False)
         audio.save(f"{user_id}.mp3")
         name_audio = f"{user_id}.mp3"

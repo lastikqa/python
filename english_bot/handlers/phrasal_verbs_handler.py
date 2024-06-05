@@ -24,12 +24,7 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         should_be_escaped.append(values[0])
-        for item in should_be_escaped:
-            indx = should_be_escaped.index(item)
-            replaced = replacer_escaped_symbols(item)
-            should_be_escaped.remove(item)
-            should_be_escaped.insert(indx, replaced)
-
+        should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped
         text = f" ***{key}***  \n\n{values} \n\n{context} \n\n{translation}"
         keyboard = create_inline_kb(2, last_btn=default_menu, **phrasal_verbs_keyboard)
