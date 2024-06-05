@@ -7,7 +7,7 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 from data.abnormal_verbs import abnormal_verbs
 from data.abnormal_verbs_list_keys import abnormal_verbs_list_keys
 from filters.abnormal_verbs_filter import abnormal_verbs_filter
-
+from useful_functuons.functions import replacer_escaped_symbols
 router = Router()
 
 
@@ -19,7 +19,7 @@ async def process_abnormal_verbs(callback: CallbackQuery):
     gamer = Games(user_id, user_param)
 
     if callback.data == "abnormal_verbs":
-        key, values = gamer.getting_dictionaries_data(dictionary=abnormal_verbs,key_list=abnormal_verbs_list_keys)
+        key, values = gamer.getting_dictionaries_data(dictionary=abnormal_verbs, key_list=abnormal_verbs_list_keys)
         text = (f"\\    ***{values[3].title()}*** \n\n\\* ***Base Form***   {key} "
                 f"\n\n\\* ***Past Form***   {values[1]} \n\n"
                 f"\\* ***Participle***   {values[2]}  ")

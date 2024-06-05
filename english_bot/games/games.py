@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup
 import random
 from gtts import gTTS
 import translators as ts
-import api.guessing_api
 from api.guessing_api import GuessingGameApi
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
@@ -116,24 +115,28 @@ class Games:
         translation = ts.translate_text(answer, to_language='ru')
         return translation
 
-    def getting_audio(self, user_id, text: str) -> bytes:
+    @staticmethod
+    def getting_audio(self, user_id, text: str) -> str:
         audio = gTTS(text=text, lang="en", slow=False)
         audio.save(f"{user_id}.mp3")
         name_audio = f"{user_id}.mp3"
         return name_audio
+
     @staticmethod
-    def getting_dictionaries_data(dictionary: dict , key_list : list) -> tuple:
+    def getting_dictionaries_data(dictionary: dict, key_list: list) -> tuple:
         """I made a list with keys of my dictionaries  and get random item of my list as a key to the dicts """
         key = random.choice(key_list)
         random_dictionary_values = dictionary[key]
 
         return key, random_dictionary_values
-    def getting_context(self,word : str)-> tuple:
+
+    @staticmethod
+    def getting_context(word: str) -> tuple:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
         and translation of the sentence into russian"""
-        find_word=list(word)
-        find_word=word[0]
-        word_url=word.replace(" ","+")
+        find_word = list(word)
+        find_word = find_word[0]
+        word_url = word.replace(" ", "+")
         page = requests.get(url=ContextEnglishApi.context_english_url+word_url,
                           headers=ContextEnglishApi.context_english_headers,
                           cookies=ContextEnglishApi.context_english_cookies)
