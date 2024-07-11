@@ -125,4 +125,3 @@ async def game(message: Message):
 
 if __name__ == '__main__':
     dp.run_polling(bot)
-    creating_gamers_db()
